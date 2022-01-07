@@ -19,7 +19,7 @@ app.use(passport.initialize());
 
 const isProduction = process.env.NODE_ENV === "production";
 
-isProduction && app.use(express.static("../client/build"));
+isProduction && app.use(express.static("/app/client/build"));
 
 // CONNECT TO DATABASE
 // db config
