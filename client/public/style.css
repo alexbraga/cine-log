@@ -1,0 +1,33 @@
+html,
+body {
+  height: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.layout {
+  flex: 1 0 auto;
+}
+
+.poster {
+  width: 200px;
+  height: 300px;
+}
+
+.google-btn {
+  width: 100%;
+}
+
+button span {
+  font-size: 1rem;
+  margin: auto;
+}
+
+.footer {
+  margin: auto;
+  padding: 20px;
+}
