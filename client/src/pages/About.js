@@ -17,7 +17,7 @@ function About() {
           with other records in a simple and lightweight Web App.
           <br />
           <br />
-          Movie.log is built with MERN stack, and all movie data is provided by{" "}
+          Cine.log is built with MERN stack, and all movie data is provided by{" "}
           <Link
             href="https://www.themoviedb.org/"
             rel="noopener noreferrer"
@@ -27,7 +27,7 @@ function About() {
           </Link>
           . The source code is available at{" "}
           <Link
-            href="https://github.com/alexbraga/movie-log"
+            href="https://github.com/alexbraga/cine-log"
             rel="noopener noreferrer"
             target="_blank"
           >

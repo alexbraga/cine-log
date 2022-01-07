@@ -74,7 +74,7 @@ function SidePanel() {
     >
       <div>
         <Typography variant="h5" sx={{ m: 2 }}>
-          Movie.log
+          Cine.log
         </Typography>
       </div>
       <div>

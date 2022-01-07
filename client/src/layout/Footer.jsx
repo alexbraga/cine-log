@@ -6,7 +6,7 @@ function Footer() {
   return (
     <div className="footer">
       <Typography variant="body2" sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
-        ©{new Date().getFullYear()} Movie.log - Movie data from{" "}
+        ©{new Date().getFullYear()} Cine.log - Movie data from{" "}
         <Link
           sx={{
             color: "rgba(255, 255, 255, 0.7)",

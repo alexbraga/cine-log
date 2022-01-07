@@ -10,7 +10,7 @@ function Home() {
 
   return (
     <CustomContainer
-      title="Movie.log"
+      title="Cine.log"
       content={
         <div>
           <Box sx={{ textAlign: "center" }}>
@@ -40,7 +40,7 @@ function Home() {
           </Button>
 
           <Typography align="center" sx={{ mt: 5 }}>
-            Movie.log is best viewed on desktop for now
+            Cine.log is best viewed on desktop for now
           </Typography>
         </div>
       }

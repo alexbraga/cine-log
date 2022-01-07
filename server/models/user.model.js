@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema(
 userSchema.methods.generateJWT = function () {
   const accessToken = JWT.sign(
     {
-      iss: "Movie.log",
+      iss: "Cine.log",
       sub: this._id,
     },
     process.env.JWT_SECRET,
@@ -56,7 +56,7 @@ userSchema.methods.generateJWT = function () {
 userSchema.methods.generateRefreshJWT = function () {
   const refreshToken = JWT.sign(
     {
-      iss: "Movie.log",
+      iss: "Cine.log",
       sub: this._id,
     },
     process.env.REFRESH_JWT_SECRET,
