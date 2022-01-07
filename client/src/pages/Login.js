@@ -198,6 +198,7 @@ function Login() {
               onFailure={handleFailure}
               theme="dark"
               cookiePolicy={"single_host_origin"}
+              autoLoad={false}
             />
           </div>
         </div>

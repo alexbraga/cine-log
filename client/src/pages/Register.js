@@ -208,6 +208,7 @@ function SignUp() {
               theme="dark"
               buttonText="Sign up with Google"
               cookiePolicy={"single_host_origin"}
+              autoLoad={false}
             />
           </div>
         </div>
