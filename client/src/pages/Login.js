@@ -57,6 +57,13 @@ function Login() {
         if (isAuthenticated) {
           authContext.setUser(user);
           authContext.setIsAuthenticated(isAuthenticated);
+          setUserInfo((prevValue) => {
+            return {
+              ...prevValue,
+              password: "",
+            };
+          });
+
           navigate(state?.path || "/diary");
         }
       })
