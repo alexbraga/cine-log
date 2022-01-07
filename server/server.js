@@ -48,9 +48,10 @@ app.use("/results", resultsRouter);
 app.use("/settings", settingsRouter);
 
 // All remaining requests return the React app, so it can handle routing. This fixes the error on page refresh after deploying to Heroku (solution found at: https://github.com/mars/heroku-cra-node/blob/c414a25250da57c73589163885e949e6f76c06e4/server/index.js#L35)
-app.get("*", function (request, response) {
-  response.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-});
+isProduction &&
+  app.get("*", function (request, response) {
+    response.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+  });
 
 // DEFINE PORTS
 const port = process.env.PORT || 5000;

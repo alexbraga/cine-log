@@ -56,13 +56,14 @@ function SignUp() {
         if (isAuthenticated) {
           authContext.setUser(user);
           authContext.setIsAuthenticated(isAuthenticated);
+          
           setUserInfo((prevValue) => {
             return {
               ...prevValue,
               password: "",
             };
           });
-          
+
           navigate("/diary");
         }
       })
