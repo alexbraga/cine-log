@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
@@ -19,7 +20,9 @@ app.use(passport.initialize());
 
 const isProduction = process.env.NODE_ENV === "production";
 
-isProduction && app.use(express.static("/app/client/build"));
+// Priority serve any static files
+isProduction &&
+  app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 // CONNECT TO DATABASE
 // db config

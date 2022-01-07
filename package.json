@@ -2,8 +2,11 @@
   "scripts": {
     "start": "cd server && node server.js",
     "build": "cd client && npm run build",
-    "install-server": "cd server && npm install",
-    "install-client": "cd client && npm install",
+    "install-server": "cd server && npm install --production",
+    "install-client": "cd client && npm install --production",
     "heroku-postbuild": "npm run install-server && npm run install-client && npm run build"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
