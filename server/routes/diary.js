@@ -50,27 +50,6 @@ router
         }
       }
     );
-  })
-  .delete(passport.authenticate("jwt", { session: false }), (req, res) => {
-    List.deleteMany(
-      {
-        userId: req.user.id,
-        type: "Watched Movie",
-      },
-      (err) => {
-        if (!err) {
-          res.status(200).json({
-            message: "Successfully removed all entries",
-          });
-        } else {
-          console.log(err);
-
-          res.status(500).json({
-            message: err.message,
-          });
-        }
-      }
-    );
   });
 
 router
