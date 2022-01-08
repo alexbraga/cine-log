@@ -21,7 +21,7 @@ function Diary() {
   // GET USER'S DIARY ENTRIES
   useEffect(() => {
     axios
-      .get("/diary")
+      .get("/api/diary")
       .then((response) => {
         setEntries(response.data);
 
@@ -39,7 +39,7 @@ function Diary() {
   // HANDLE ENTRIES
   // Actions passed to the "Entry" component to be executed from the "Edit Dialog" on saving updates
   function editEntry(entryId, data) {
-    axios.patch(`/diary/ ${entryId}`, data).then((response) => {
+    axios.patch(`/api/diary/${entryId}`, data).then((response) => {
       // On successful response display success message and change `isUpdated` state to force a re-render of `useEffect()` and update diary list info
       setSnackMessage(response.data.message);
       setOpenSnackbar(true);
@@ -50,7 +50,7 @@ function Diary() {
   // Actions passed to the "Entry" component to be executed from the "Delete Dialog" on deleting entry
   function deleteEntry(entryId, movieId) {
     axios
-      .delete(`/diary/ ${entryId}`, { data: { movieId: movieId } })
+      .delete(`/api/diary/${entryId}`, { data: { movieId: movieId } })
       .then((response) => {
         // On successful response display success message
         setSnackMessage(response.data.message);

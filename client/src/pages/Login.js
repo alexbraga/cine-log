@@ -49,7 +49,7 @@ function Login() {
 
     axios
       .create()
-      .post("/auth/login", userInfo)
+      .post("/api/auth/login", userInfo)
       .then((response) => {
         // On successful authentication, set `user` to user's first name and `isAuthenticated` to true, then redirect to the route that user was trying to access, otherwise redirect to `/diary`
         const { user, isAuthenticated } = response.data;
@@ -57,14 +57,6 @@ function Login() {
         if (isAuthenticated) {
           authContext.setUser(user);
           authContext.setIsAuthenticated(isAuthenticated);
-
-          setUserInfo((prevValue) => {
-            return {
-              ...prevValue,
-              password: "",
-            };
-          });
-          
           navigate(state?.path || "/diary");
         }
       })
@@ -78,7 +70,7 @@ function Login() {
   function handleSuccess(response) {
     axios
       .create()
-      .post("/auth/google", { token: response.tokenId })
+      .post("/api/auth/google", { token: response.tokenId })
       .then((res) => {
         const { user, isAuthenticated } = res.data;
 

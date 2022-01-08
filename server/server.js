@@ -41,17 +41,16 @@ const diaryRouter = require("./routes/diary");
 const resultsRouter = require("./routes/results");
 const settingsRouter = require("./routes/settings");
 
-app.use("/auth", authRouter);
-app.use("/details", detailsRouter);
-app.use("/diary", diaryRouter);
-app.use("/results", resultsRouter);
-app.use("/settings", settingsRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/details", detailsRouter);
+app.use("/api/diary", diaryRouter);
+app.use("/api/results", resultsRouter);
+app.use("/api/settings", settingsRouter);
 
-// All remaining requests return the React app, so it can handle routing. This fixes the error on page refresh after deploying to Heroku (solution found at: https://github.com/mars/heroku-cra-node/blob/c414a25250da57c73589163885e949e6f76c06e4/server/index.js#L35)
-isProduction &&
-  app.get("*", function (request, response) {
-    response.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-  });
+// All remaining requests return the React app, so it can handle routing (solution found at: https://github.com/mars/heroku-cra-node/blob/c414a25250da57c73589163885e949e6f76c06e4/server/index.js#L35)
+app.get("*", function (request, response) {
+  response.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+});
 
 // DEFINE PORTS
 const port = process.env.PORT || 5000;

@@ -51,7 +51,7 @@ function SidePanel() {
   function handleLogout() {
     axios
       .create()
-      .get("/auth/logout")
+      .get("/api/auth/logout")
       .then((response) => {
         const { user, isAuthenticated } = response.data;
 

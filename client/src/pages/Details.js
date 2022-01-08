@@ -33,7 +33,7 @@ function Details() {
     const url = new URL(window.location.href);
 
     axios
-      .get(url.pathname)
+      .get(`/api${url.pathname}`)
       .then((response) => {
         setDetails(response.data);
       })
@@ -105,7 +105,7 @@ function Details() {
     event.preventDefault();
     const url = new URL(window.location.href);
 
-    axios.post(url.pathname, entryData).then((res) => {
+    axios.post(`/api${url.pathname}`, entryData).then((res) => {
       navigate("/diary");
     });
   }

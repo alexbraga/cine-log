@@ -61,7 +61,7 @@ function WatchedPanel(props) {
     const url = new URL(window.location.href);
 
     axios
-      .patch(url.pathname, { rating: userData.rating, review: userData.review })
+      .patch(`/api${url.pathname}`, { rating: userData.rating, review: userData.review })
       .then((res) => {
         setMessage(res.data.message);
         setSeverity("success");

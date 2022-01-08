@@ -31,7 +31,7 @@ function Reset() {
     // If request with token provided on `location.pathname` is valid, show password change form; otherwise display error message
     axios
       .create()
-      .get(`/auth${location.pathname}`)
+      .get(`/api/auth${location.pathname}`)
       .then((response) => {
         if (response.status === 200) {
           setShowForm(true);
@@ -72,7 +72,9 @@ function Reset() {
     if (validateForm()) {
       axios
         .create()
-        .post(`/auth${location.pathname}`, { password: password.new_password })
+        .post(`/api/auth${location.pathname}`, {
+          password: password.new_password,
+        })
         .then((response) => {
           if (response.status === 200) {
             setMessageSeverity("success");

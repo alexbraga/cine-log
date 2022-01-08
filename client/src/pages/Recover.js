@@ -27,7 +27,7 @@ function Recover() {
     // Submit reset password request. If email is valid and user is found, display success message, otherwise display error message
     axios
       .create()
-      .post("/auth/recover", { email: email })
+      .post("/api/auth/recover", { email: email })
       .then((response) => {
         if (response.status === 200) {
           setMessageSeverity("success");

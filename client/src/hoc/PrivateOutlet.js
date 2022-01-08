@@ -20,7 +20,7 @@ function PrivateOutlet() {
         originalRequest._retry = true;
 
         // If original request return error 401, send GET request to get new access token, then retry original request
-        return axios.get("/auth/token").then((res) => {
+        return axios.get("/api/auth/token").then((res) => {
           if (res.status === 200) {
             return axios(originalRequest);
           }

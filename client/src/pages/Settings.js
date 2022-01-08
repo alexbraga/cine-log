@@ -31,7 +31,7 @@ function Settings() {
   // GET USER INFO
   useEffect(() => {
     axios
-      .get("/settings")
+      .get("/api/settings")
       .then((response) => {
         const { first_name, last_name, email } = response.data;
 
@@ -66,7 +66,7 @@ function Settings() {
   // HANDLE PERSONAL INFO
   function handleSubmitInfo() {
     axios
-      .patch("/settings/user", userInfo)
+      .patch("/api/settings/user", userInfo)
       .then((response) => {
         setEditInfo(false);
         setMessage(response.data.message);
@@ -105,7 +105,7 @@ function Settings() {
   function handleSubmitPswd() {
     if (validateForm()) {
       axios
-        .patch("/settings/password", {
+        .patch("/api/settings/password", {
           old_password: userInfo.old_password,
           password: userInfo.new_password,
         })
@@ -136,14 +136,14 @@ function Settings() {
   function deleteAccount() {
     axios
       .create()
-      .delete("/settings")
+      .delete("/api/settings")
       .then((response) => {
         return;
       });
 
     axios
       .create()
-      .get("/auth/logout")
+      .get("/api/auth/logout")
       .then((response) => {
         const { user, isAuthenticated } = response.data;
 

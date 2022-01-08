@@ -27,7 +27,7 @@ function Results() {
 
     // On successful response, assign the results to `results` array in `details` object
     axios
-      .get(`/results/${query}`)
+      .get(`/api/results/${query}`)
       .then((response) => {
         setDetails(response.data);
       })

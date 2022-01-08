@@ -48,7 +48,7 @@ function SignUp() {
 
     axios
       .create()
-      .post("/auth/register", userInfo)
+      .post("/api/auth/register", userInfo)
       .then((response) => {
         // On successful authentication, set `user` to user's first name and `isAuthenticated` to true, then redirect to `/diary`
         const { user, isAuthenticated } = response.data;
@@ -56,14 +56,6 @@ function SignUp() {
         if (isAuthenticated) {
           authContext.setUser(user);
           authContext.setIsAuthenticated(isAuthenticated);
-          
-          setUserInfo((prevValue) => {
-            return {
-              ...prevValue,
-              password: "",
-            };
-          });
-
           navigate("/diary");
         }
       })
@@ -77,7 +69,7 @@ function SignUp() {
   function handleSuccess(response) {
     axios
       .create()
-      .post("/auth/google", { token: response.tokenId })
+      .post("/api/auth/google", { token: response.tokenId })
       .then((res) => {
         const { user, isAuthenticated } = res.data;
 
