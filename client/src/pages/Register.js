@@ -42,27 +42,36 @@ function SignUp() {
     });
   }
 
+  function validateForm(email) {
+    return /^\S+@\S+\.\S+$/.test(email);
+  }
+
   // HANDLE LOCAL SIGN UP AND AUTHENTICATION
   function handleSignUp(event) {
     event.preventDefault();
 
-    axios
-      .create()
-      .post("/api/auth/register", userInfo)
-      .then((response) => {
-        // On successful authentication, set `user` to user's first name and `isAuthenticated` to true, then redirect to `/diary`
-        const { user, isAuthenticated } = response.data;
+    if (validateForm(userInfo.email)) {
+      axios
+        .create()
+        .post("/api/auth/register", userInfo)
+        .then((response) => {
+          // On successful authentication, set `user` to user's first name and `isAuthenticated` to true, then redirect to `/diary`
+          const { user, isAuthenticated } = response.data;
 
-        if (isAuthenticated) {
-          authContext.setUser(user);
-          authContext.setIsAuthenticated(isAuthenticated);
-          navigate("/diary");
-        }
-      })
-      .catch((err) => {
-        setMessage(err.response.data.message);
-        setOpen(true);
-      });
+          if (isAuthenticated) {
+            authContext.setUser(user);
+            authContext.setIsAuthenticated(isAuthenticated);
+            navigate("/diary");
+          }
+        })
+        .catch((err) => {
+          setMessage(err.response.data.message);
+          setOpen(true);
+        });
+    } else {
+      setMessage("Please enter a valid e-mail address");
+      setOpen(true);
+    }
   }
 
   // HANDLE GOOGLE AUTHENTICATION
