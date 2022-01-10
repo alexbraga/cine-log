@@ -20,6 +20,8 @@ function Diary() {
 
   // GET USER'S DIARY ENTRIES
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0 });
+    
     axios
       .get("/api/diary")
       .then((response) => {

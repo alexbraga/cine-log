@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -27,6 +27,8 @@ import {
 function Details() {
   const matches = useMediaQuery("(max-width:718px)");
 
+  const myRef = useRef(null);
+
   const navigate = useNavigate();
 
   const [details, setDetails] = useState({
@@ -40,6 +42,7 @@ function Details() {
 
   //  GET MOVIE DETAILS AND USER LOGGED DATA
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0 });
     const url = new URL(window.location.href);
 
     axios
@@ -56,9 +59,10 @@ function Details() {
   const placeholderImg =
     "https://www.genius100visions.com/wp-content/uploads/2017/09/placeholder-vertical.jpg";
 
-  // Expand section to log new diary entry or view/edit previous logged data
+  // Expand movie details
   function handleExpand() {
     setShow(!show);
+    myRef.current.scrollIntoView({ behavior: "smooth" });
   }
 
   // ENTRY DATA
@@ -164,7 +168,7 @@ function Details() {
             </Grid>
 
             {/* MOVIE DETAILS */}
-            <Grid item xs={12} sm={7} md={8}>
+            <Grid ref={myRef} item xs={12} sm={7} md={8}>
               <Collapse in={matches ? show : true}>
                 <Credits
                   director={getDirector(details).join(", ")}
