@@ -56,6 +56,7 @@ function Entry(props) {
       </TableCell>
       {/* RELEASE YEAR */}
       <TableCell align="right">{props.year}</TableCell>
+
       {/* RATING */}
       <TableCell align="right">
         <Rating

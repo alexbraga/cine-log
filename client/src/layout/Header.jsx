@@ -6,6 +6,9 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import SidePanel from "./SidePanel";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -14,11 +17,11 @@ const Search = styled("div")(({ theme }) => ({
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.2),
   },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
+  marginLeft: 8,
+  width: "85%",
+  [theme.breakpoints.up("xl")]: {
     marginLeft: theme.spacing(3),
+    marginRight: 5,
     width: "auto",
   },
 }));
@@ -49,6 +52,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function Header() {
   const [searchInput, setSearchInput] = useState("");
+  const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -79,6 +83,10 @@ function Header() {
     }
   }
 
+  const handleDrawerToggle = () => {
+    setOpen(!open);
+  };
+
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -88,7 +96,19 @@ function Header() {
             backgroundColor: "#31313d",
           }}
         >
+          {/* MENU ICON */}
           <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ display: { xl: "none" } }}
+            >
+              <MenuIcon />
+            </IconButton>
+
+            {/* SEARCH FIELD   */}
             <div style={{ margin: "auto" }}>
               <Search>
                 <SearchIconWrapper>
@@ -107,6 +127,12 @@ function Header() {
             </div>
           </Toolbar>
         </AppBar>
+        <Box
+          component="nav"
+          sx={{ width: { sm: "240px" }, flexShrink: { sm: 0 } }}
+        >
+          <SidePanel open={open} toggle={handleDrawerToggle} />
+        </Box>
       </Box>
     </div>
   );

@@ -8,7 +8,7 @@ import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import TextField from "@mui/material/TextField";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import Typography from "@mui/material/Typography";
@@ -64,7 +64,7 @@ function EditDialog(props) {
       {/* DATE */}
       <DialogContent style={{ paddingTop: "20px" }}>
         <LocalizationProvider dateAdapter={DateAdapter}>
-          <DesktopDatePicker
+          <MobileDatePicker
             label="Watched on"
             inputFormat="MMM dd, yyyy"
             disableMaskedInput={true}

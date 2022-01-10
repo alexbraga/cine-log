@@ -8,6 +8,7 @@ import CustomSnackbar from "../components/CustomSnackbar";
 import DeleteDialog from "../components/DeleteDialog";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function Settings() {
   const [userInfo, setUserInfo] = useState({
@@ -27,6 +28,9 @@ function Settings() {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const authContext = useContext(AuthContext);
+
+  const matches = useMediaQuery("(min-width:900px)");
+  const matchesLg = useMediaQuery("(min-width:1200px)");
 
   // GET USER INFO
   useEffect(() => {
@@ -173,7 +177,7 @@ function Settings() {
           <Typography sx={{ mb: 2 }}>Personal Info</Typography>
           <Grid container spacing={2}>
             {/* USER FIELDS */}
-            <Grid item xs={2}>
+            <Grid item md={matches ? 4 : 5} lg={3}>
               <TextField
                 disabled={!editInfo}
                 autoComplete="off"
@@ -184,7 +188,7 @@ function Settings() {
                 onChange={handleInfo}
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item md={7} lg={9}>
               <TextField
                 disabled={!editInfo}
                 autoComplete="off"
@@ -195,10 +199,10 @@ function Settings() {
                 onChange={handleInfo}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={matches ? 4 : 12}>
               <TextField
+                sx={matchesLg && { width: "248px" }}
                 disabled={!editInfo}
-                sx={{ width: "336px" }}
                 autoComplete="off"
                 label="E-mail Address"
                 name="email"
@@ -209,7 +213,7 @@ function Settings() {
             </Grid>
 
             {/* BUTTONS */}
-            <Grid item>
+            <Grid item xs={12}>
               {editInfo ? (
                 <div>
                   <Button
@@ -246,8 +250,8 @@ function Settings() {
             <Grid item xs={12}>
               <Typography sx={{ mt: 3, mb: 2 }}>Password</Typography>
               <TextField
+                sx={matchesLg && { width: "248px" }}
                 disabled={!changePswd}
-                sx={{ width: "336px" }}
                 autoComplete="off"
                 label="Old Password"
                 name="old_password"
@@ -259,8 +263,8 @@ function Settings() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                sx={matchesLg && { width: "248px" }}
                 disabled={!changePswd}
-                sx={{ width: "336px" }}
                 autoComplete="off"
                 label="New Password"
                 name="new_password"
@@ -272,8 +276,8 @@ function Settings() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                sx={matchesLg && { width: "248px" }}
                 disabled={!changePswd}
-                sx={{ width: "336px" }}
                 autoComplete="off"
                 label="Confirm Password"
                 name="confirm_password"

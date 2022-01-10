@@ -117,7 +117,7 @@ function Diary() {
               </Table>
             </TableContainer>
           ) : (
-            "Your diary is empty! Look for a movie in the search box above and start building your diary =)"
+            "Your diary is empty! Look for a movie you've watched in the search box above and start building your diary =)"
           )
         }
       />

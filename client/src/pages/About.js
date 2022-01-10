@@ -36,16 +36,18 @@ function About() {
           .
           <br />
           <br />
-          Feel free to reach me at{" "}
-          <Link
-            href="mailto:contato@alexbraga.com.br"
-            rel="noopener noreferrer"
-            target="_blank"
-            sx={{ fontStyle: "italic" }}
-          >
-            contato@alexbraga.com.br
-          </Link>
-          .
+          <Typography align="left">
+            Feel free to reach me at{" "}
+            <Link
+              href="mailto:contato@alexbraga.com.br"
+              rel="noopener noreferrer"
+              target="_blank"
+              sx={{ fontStyle: "italic" }}
+            >
+              contato@alexbraga.com.br
+            </Link>
+            .
+          </Typography>
         </Typography>
       }
     />

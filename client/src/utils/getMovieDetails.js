@@ -10,6 +10,14 @@ export function getDirector(data) {
   return directors;
 }
 
+export function getCast(data) {
+  const cast = data.tmdbCredits.cast.slice(0, 10).map((result) => {
+    return result.name;
+  });
+
+  return cast.join(", ");
+}
+
 export function getGenres(data) {
   const genres = data.tmdbDetails.genres.map((result) => {
     return result.name;

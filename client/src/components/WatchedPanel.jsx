@@ -3,7 +3,7 @@ import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
@@ -61,7 +61,10 @@ function WatchedPanel(props) {
     const url = new URL(window.location.href);
 
     axios
-      .patch(`/api${url.pathname}`, { rating: userData.rating, review: userData.review })
+      .patch(`/api${url.pathname}`, {
+        rating: userData.rating,
+        review: userData.review,
+      })
       .then((res) => {
         setMessage(res.data.message);
         setSeverity("success");
@@ -227,7 +230,7 @@ function WatchedPanel(props) {
           <DialogContent style={{ paddingTop: "20px" }}>
             {/* DATE PICKER */}
             <LocalizationProvider dateAdapter={DateAdapter}>
-              <DesktopDatePicker
+              <MobileDatePicker
                 label="Watched on"
                 inputFormat="MMM dd, yyyy"
                 disableMaskedInput={true}

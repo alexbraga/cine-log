@@ -7,8 +7,11 @@ import ResultItem from "../components/ResultItem";
 import Pagination from "@mui/material/Pagination";
 import CustomCard from "../layout/CustomCard";
 import axios from "axios";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function Results() {
+  const matches = useMediaQuery("(max-width:767px)");
+
   const navigate = useNavigate();
 
   const [details, setDetails] = useState({ results: [] });
@@ -50,7 +53,7 @@ function Results() {
           <Grid container>
             <Typography>{results ? results : 0} results found</Typography>
             <Grid item xs={12}>
-              <List sx={{ mt: 5 }}>
+              <List sx={{ mt: 3 }}>
                 {details.results.map((result) => {
                   return (
                     <ResultItem
@@ -74,6 +77,7 @@ function Results() {
           <Pagination
             sx={{ mt: 2 }}
             count={pages}
+            siblingCount={matches ? 0 : 1}
             onChange={(event, page) => {
               const url = new URLSearchParams(window.location.search);
               url.set("page", page);

@@ -14,9 +14,19 @@ import IconButton from "@mui/material/IconButton";
 import axios from "axios";
 import UnwatchedPanel from "../components/UnwatchedPanel";
 import WatchedPanel from "../components/WatchedPanel";
-import { getDirector, getGenres, getYear } from "../utils/getMovieDetails";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Credits from "../components/Credits";
+import Poster from "../components/Poster";
+import {
+  getCast,
+  getDirector,
+  getGenres,
+  getYear,
+} from "../utils/getMovieDetails";
 
 function Details() {
+  const matches = useMediaQuery("(max-width:718px)");
+
   const navigate = useNavigate();
 
   const [details, setDetails] = useState({
@@ -117,7 +127,7 @@ function Details() {
 
   return (
     <Container component="main" maxWidth="md">
-      <Card sx={{ padding: 3, paddingBottom: 0, margin: 2 }}>
+      <Card sx={{ padding: matches ? 0 : 3, paddingBottom: 0, margin: 2 }}>
         <div style={{ textAlign: "right" }}>
           <IconButton
             aria-label="close"
@@ -139,106 +149,81 @@ function Details() {
               </Typography>
             </Grid>
 
-            {/* MOVIE DETAILS */}
-            <Grid item xs={8}>
-              {/* DIRECTOR(S) */}
-              <Typography style={{ fontWeight: "bold" }}>
-                Directed by:
-              </Typography>
-              <Typography sx={{ mb: 2 }}>
-                {getDirector(details).join(", ")}
-              </Typography>
-
-              {/* CAST */}
-              <Typography style={{ fontWeight: "bold" }}>Cast:</Typography>
-              <Typography sx={{ mb: 2 }} align="justify">
-                {details.tmdbCredits.cast
-                  .slice(0, 10)
-                  .map((result) => {
-                    return result.name;
-                  })
-                  .join(", ")}
-              </Typography>
-
-              {/* GENRE(S) */}
-              <Typography style={{ fontWeight: "bold" }}>Genre(s):</Typography>
-              <Typography sx={{ mb: 2 }}>
-                {getGenres(details).join(", ")}
-              </Typography>
-
-              {/* RUNTIME */}
-              <Typography style={{ fontWeight: "bold" }}>Runtime:</Typography>
-              <Typography sx={{ mb: 2 }}>
-                {details.tmdbDetails.runtime} min
-              </Typography>
-            </Grid>
-
             {/* MOVIE POSTER */}
-            <Grid item xs={4}>
-              <div style={{ textAlign: "right" }}>
-                <img
-                  className="poster"
-                  src={
+            <Grid item xs={12} sm={matches ? 12 : 5} md={4}>
+              <div style={{ textAlign: matches ? "center" : "left" }}>
+                <Poster
+                  source={
                     details.tmdbDetails.poster_path
                       ? baseURL + details.tmdbDetails.poster_path
                       : placeholderImg
                   }
-                  alt={`${details.tmdbDetails.title} poster`}
+                  altText={`${details.tmdbDetails.title} poster`}
                 />
               </div>
             </Grid>
 
-            {/* MOVIE SYNOPSIS */}
-            <Grid item xs={12}>
-              <Typography style={{ fontWeight: "bold" }}>Synopsis:</Typography>
-              <Typography align="justify">
-                {details.tmdbDetails.overview}
-              </Typography>
+            {/* MOVIE DETAILS */}
+            <Grid item xs={12} sm={7} md={8}>
+              <Collapse in={matches ? show : true}>
+                <Credits
+                  director={getDirector(details).join(", ")}
+                  cast={getCast(details)}
+                  genres={getGenres(details).join(", ")}
+                  runtime={details.tmdbDetails.runtime}
+                />
+              </Collapse>
+            </Grid>
+
+            <Grid item xs={12} sx={{ mt: 2 }}>
+              <Collapse in={matches ? show : true}>
+                <Typography style={{ fontWeight: "bold" }}>Synopsis</Typography>
+                <Typography>{details.tmdbDetails.overview}</Typography>
+              </Collapse>
             </Grid>
 
             {/* EXPAND SECTION BUTTON */}
-            <Fab
-              color="primary"
-              size="small"
-              aria-label="expand"
-              sx={{ m: "auto", mt: 2 }}
-              onClick={handleExpand}
-            >
-              {show ? <RemoveIcon /> : <AddIcon />}
-            </Fab>
+            {matches ? (
+              <Fab
+                color="primary"
+                size="small"
+                aria-label="expand"
+                sx={{ m: "auto", mt: 2 }}
+                onClick={handleExpand}
+              >
+                {show ? <RemoveIcon /> : <AddIcon />}
+              </Fab>
+            ) : null}
           </Grid>
         </CardContent>
       </Card>
 
       {/* LOG MOVIE PANEL */}
-      <Collapse in={show}>
-        {details.userData === undefined ? (
-          <UnwatchedPanel
-            date={userData.date}
-            onDateChange={handleDate}
-            rating={userData.rating}
-            onRatingChange={handleRating}
-            review={userData.review}
-            onReviewChange={handleReview}
-            view_count={
-              details.userData === undefined
-                ? null
-                : details.userData.view_count
-            }
-            onClick={onSubmit}
-          />
-        ) : (
-          <WatchedPanel
-            date={userData.date}
-            onDateChange={handleDate}
-            rating={details.userData.rating}
-            review={details.userData.review}
-            view_count={details.userData.view_count}
-            onSubmit={onSubmit}
-            onSaveChanges={handleUpdateDetails}
-          />
-        )}
-      </Collapse>
+
+      {details.userData === undefined ? (
+        <UnwatchedPanel
+          date={userData.date}
+          onDateChange={handleDate}
+          rating={userData.rating}
+          onRatingChange={handleRating}
+          review={userData.review}
+          onReviewChange={handleReview}
+          view_count={
+            details.userData === undefined ? null : details.userData.view_count
+          }
+          onClick={onSubmit}
+        />
+      ) : (
+        <WatchedPanel
+          date={userData.date}
+          onDateChange={handleDate}
+          rating={details.userData.rating}
+          review={details.userData.review}
+          view_count={details.userData.view_count}
+          onSubmit={onSubmit}
+          onSaveChanges={handleUpdateDetails}
+        />
+      )}
     </Container>
   );
 }

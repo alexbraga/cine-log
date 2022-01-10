@@ -1,10 +1,9 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
@@ -21,9 +20,9 @@ function UnwatchedPanel(props) {
       <CardContent>
         <Grid container sx={{ mb: 2 }}>
           {/* DATE PICKER */}
-          <Grid item xs={3}>
+          <Grid item md={12}>
             <LocalizationProvider dateAdapter={DateAdapter}>
-              <DesktopDatePicker
+              <MobileDatePicker
                 label="Watched on"
                 inputFormat="MMM dd, yyyy"
                 disableMaskedInput={true}
