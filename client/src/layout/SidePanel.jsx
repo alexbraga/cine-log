@@ -30,7 +30,7 @@ function SidePanel(props) {
         open={props.open}
         onClose={props.toggle}
       >
-        <CustomNavBar />
+        <CustomNavBar onClose={props.toggle} />
       </Drawer>
     </div>
   );

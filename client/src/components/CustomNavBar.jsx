@@ -18,7 +18,7 @@ const buttonHover = {
   },
 };
 
-function CustomNavBar() {
+function CustomNavBar(props) {
   const authContext = useContext(AuthContext);
 
   const menu = [
@@ -84,6 +84,7 @@ function CustomNavBar() {
               onClick={(event) => {
                 navigate(item.path);
                 handleClick(event, index);
+                props.onClose();
               }}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
