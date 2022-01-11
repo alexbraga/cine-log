@@ -31,7 +31,14 @@ function DeleteDialog(props) {
         {/* BUTTONS */}
         <DialogActions sx={{ mr: 2, mb: 1 }}>
           <Button onClick={props.onClose}>Cancel</Button>
-          <Button color="error" variant="contained" onClick={props.onRemove}>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={() => {
+              props.onRemove();
+              props.onClose();
+            }}
+          >
             Delete
           </Button>
         </DialogActions>

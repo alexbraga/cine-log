@@ -18,7 +18,7 @@ const buttonHover = {
   },
 };
 
-function CustomMenu() {
+function CustomNavBar() {
   const authContext = useContext(AuthContext);
 
   const menu = [
@@ -109,4 +109,4 @@ function CustomMenu() {
   );
 }
 
-export default CustomMenu;
+export default CustomNavBar;

@@ -20,8 +20,7 @@ const Search = styled("div")(({ theme }) => ({
   marginLeft: 8,
   width: "85%",
   [theme.breakpoints.up("xl")]: {
-    marginLeft: theme.spacing(3),
-    marginRight: 5,
+    marginRight: 8,
     width: "auto",
   },
 }));

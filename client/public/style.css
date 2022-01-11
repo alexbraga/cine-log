@@ -22,6 +22,28 @@ button span {
   margin: auto;
 }
 
+table {
+  border-collapse: separate;
+  border-spacing: 0 1px;
+  width: 100%;
+}
+
+tbody tr {
+background-color: rgba(255, 255, 255, 0.08);
+}
+
+tbody tr:hover {
+background-color: rgba(255, 255, 255, 0.11);
+}
+
+.column-left {
+  text-align: left;
+}
+
+.column-right {
+  text-align: right;
+}
+
 .footer {
   margin: auto;
   padding: 20px;

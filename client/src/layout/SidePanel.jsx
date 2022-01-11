@@ -1,5 +1,5 @@
 import Drawer from "@mui/material/Drawer";
-import CustomMenu from "../components/CustomMenu";
+import CustomNavBar from "../components/CustomNavBar";
 
 function SidePanel(props) {
   return (
@@ -13,7 +13,7 @@ function SidePanel(props) {
           "& .MuiDrawer-paper": { boxSizing: "border-box", width: "240px" },
         }}
       >
-        <CustomMenu />
+        <CustomNavBar />
       </Drawer>
 
       {/* TEMPORARY DRAWER */}
@@ -30,7 +30,7 @@ function SidePanel(props) {
         open={props.open}
         onClose={props.toggle}
       >
-        <CustomMenu />
+        <CustomNavBar />
       </Drawer>
     </div>
   );
