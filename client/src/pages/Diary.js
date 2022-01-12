@@ -3,13 +3,21 @@ import axios from "axios";
 import CustomCard from "../layout/CustomCard";
 import CustomSnackbar from "../components/CustomSnackbar";
 import Entries from "../components/Entries";
+import Fab from "@mui/material/Fab";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 function Diary() {
   const [entries, setEntries] = useState([]);
+
   const [showList, setShowList] = useState(true);
+
   const [snackMessage, setSnackMessage] = useState("");
+
   const [openSnackbar, setOpenSnackbar] = useState(false);
+
   const [isUpdated, setIsUpdated] = useState(false);
+
+  const [offset, setOffset] = useState(0);
 
   // GET USER'S DIARY ENTRIES
   useEffect(() => {
@@ -26,6 +34,14 @@ function Diary() {
       .catch((err) => {
         console.log(err);
       });
+
+    // Add event listener to detect vertical page scroll changes (solution found at: https://stackoverflow.com/a/61018017/13299051)
+    const onScroll = () => setOffset(window.pageYOffset);
+    // Clean up code
+    window.removeEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUpdated]);
 
@@ -72,17 +88,40 @@ function Diary() {
       <CustomCard
         title="Diary"
         content={
-          showList ? (
-            <Entries
-              data={entries}
-              onUpdate={editEntry}
-              onRemove={deleteEntry}
-            />
-          ) : (
-            "Your diary is empty! Look for a movie in the search box above and start building your diary =)"
-          )
+          <div>
+            {showList ? (
+              <Entries
+                data={entries}
+                onUpdate={editEntry}
+                onRemove={deleteEntry}
+              />
+            ) : (
+              <p>
+                Your diary is empty! Look for a movie in the search box above
+                and start building your diary =)
+              </p>
+            )}
+          </div>
         }
       />
+
+      {/* If vertical page scroll is detected, show "scroll to top" button */}
+      {offset > 0 && (
+        <div style={{ position: "fixed", bottom: 40, right: 20 }}>
+          <Fab
+            aria-label="scroll-to-top"
+            onClick={() =>
+              window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "smooth",
+              })
+            }
+          >
+            <KeyboardArrowUpIcon />
+          </Fab>
+        </div>
+      )}
 
       <CustomSnackbar
         open={openSnackbar}
