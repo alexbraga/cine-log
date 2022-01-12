@@ -38,10 +38,6 @@ function Home() {
           >
             Create Account
           </Button>
-
-          <Typography align="center" sx={{ mt: 5 }}>
-            Cine.log is best viewed on desktop for now
-          </Typography>
         </div>
       }
     />
