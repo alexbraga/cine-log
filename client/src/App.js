@@ -27,6 +27,15 @@ const theme = createTheme({
   typography: {
     fontFamily: ["Montserrat", "Open Sans"].join(","),
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1675,
+    },
+  },
   components: {
     MuiOutlinedInput: {
       styleOverrides: {

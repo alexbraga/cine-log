@@ -10,6 +10,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const buttonHover = {
   "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.1)" },
@@ -20,6 +21,7 @@ const buttonHover = {
 
 function CustomNavBar(props) {
   const authContext = useContext(AuthContext);
+  const matches = useMediaQuery("(max-width:1535px)");
 
   const menu = [
     {
@@ -84,7 +86,7 @@ function CustomNavBar(props) {
               onClick={(event) => {
                 navigate(item.path);
                 handleClick(event, index);
-                props.onClose();
+                matches && props.onClose();
               }}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>

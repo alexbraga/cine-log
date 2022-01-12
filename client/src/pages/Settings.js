@@ -203,7 +203,7 @@ function Settings() {
             </Grid>
             <Grid item xs={matches ? 4 : 12}>
               <TextField
-                sx={matchesLg && { width: "248px" }}
+                sx={{ width: matchesLg ? "248px" : "auto" }}
                 disabled={!editInfo}
                 autoComplete="off"
                 label="E-mail Address"
@@ -252,7 +252,7 @@ function Settings() {
             <Grid item xs={12}>
               <Typography sx={{ mt: 3, mb: 2 }}>Password</Typography>
               <TextField
-                sx={matchesLg && { width: "248px" }}
+                sx={{ width: matchesLg ? "248px" : "auto" }}
                 disabled={!changePswd}
                 autoComplete="off"
                 label="Old Password"
@@ -265,7 +265,7 @@ function Settings() {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                sx={matchesLg && { width: "248px" }}
+                sx={{ width: matchesLg ? "248px" : "auto" }}
                 disabled={!changePswd}
                 autoComplete="off"
                 label="New Password"
@@ -278,7 +278,7 @@ function Settings() {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                sx={matchesLg && { width: "248px" }}
+                sx={{ width: matchesLg ? "248px" : "auto" }}
                 disabled={!changePswd}
                 autoComplete="off"
                 label="Confirm Password"

@@ -237,7 +237,7 @@ function Entries(props) {
               accessor: "details[0].review",
               className: "column-right",
               Cell: ({ cell: { value } }) =>
-                !value ? null : <DescriptionIcon />,
+                !value ? null : <DescriptionIcon fontSize="small" />,
             },
             {
               Header: "",
@@ -317,7 +317,7 @@ function Entries(props) {
               accessor: "details[0].review",
               className: "column-right",
               Cell: ({ cell: { value } }) =>
-                !value ? null : <DescriptionIcon />,
+                !value ? null : <DescriptionIcon fontSize="small" />,
             },
             {
               Header: "",
@@ -394,7 +394,7 @@ function Entries(props) {
               accessor: "details[0].review",
               className: "column-right",
               Cell: ({ cell: { value } }) =>
-                !value ? null : <DescriptionIcon />,
+                !value ? null : <DescriptionIcon fontSize="small" />,
             },
             {
               Header: "Actions",
