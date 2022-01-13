@@ -11,6 +11,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import EditIcon from "@mui/icons-material/Edit";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Alert from "@mui/material/Alert";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -19,6 +20,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 import CustomSnackbar from "./CustomSnackbar";
 import usePersistedState from "../hooks/usePersistedState";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function WatchedPanel(props) {
   const [message, setMessage] = useState(null);
@@ -27,6 +29,8 @@ function WatchedPanel(props) {
   const [open, setOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [alert, setAlert] = usePersistedState(true, "edit_panel:info_alert");
+
+  const matches = useMediaQuery("(max-width:1184px)");
 
   const [userData, setUserData] = useState({
     rating: null,
@@ -178,19 +182,37 @@ function WatchedPanel(props) {
               Save
             </Button>
             {alert ? (
-              <Alert
-                sx={{ mt: 4 }}
-                severity="info"
-                onClose={() => {
-                  setAlert(false);
-                }}
-              >
-                To modify the watched date, go to Diary and click on the pencil{" "}
-                <span>
-                  (<EditIcon />)
-                </span>{" "}
-                icon for the entry you want to change.
-              </Alert>
+              matches ? (
+                <Alert
+                  sx={{ mt: 4 }}
+                  severity="info"
+                  onClose={() => {
+                    setAlert(false);
+                  }}
+                >
+                  To modify the watched date, go to Diary, click on the dots{" "}
+                  <span>
+                    (<MoreVertIcon fontSize="small" />)
+                  </span>{" "}
+                  menu for the entry you want to change and select{" "}
+                  <strong>Edit</strong>.
+                </Alert>
+              ) : (
+                <Alert
+                  sx={{ mt: 4 }}
+                  severity="info"
+                  onClose={() => {
+                    setAlert(false);
+                  }}
+                >
+                  To modify the watched date, go to Diary and click on the
+                  pencil{" "}
+                  <span>
+                    (<EditIcon fontSize="small" />)
+                  </span>{" "}
+                  icon for the entry you want to change.
+                </Alert>
+              )
             ) : null}
           </div>
         ) : (

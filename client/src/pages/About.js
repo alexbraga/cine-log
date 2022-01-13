@@ -14,7 +14,7 @@ function About() {
             <br />
             <br />
             This is my very first personal project and it was born out of my
-            love for cinema and the desire to keep track of watched films
+            love for cinema and the desire to keep track of watched movies
             alongside with other records in a simple and lightweight Web App.
             <br />
             <br />

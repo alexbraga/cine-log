@@ -1,12 +1,33 @@
-import { useTable, useSortBy } from "react-table";
+import { useTable, useSortBy, useFilters } from "react-table";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import { Filter, DefaultColumnFilter } from "./Filters";
 
-function CustomTable({ columns, data }) {
-  const tableInstance = useTable({ columns, data }, useSortBy);
+function ReactTable({ columns, data }) {
+  const tableInstance = useTable(
+    {
+      columns,
+      data,
+      defaultColumn: { Filter: DefaultColumnFilter },
+    },
+    useFilters,
+    useSortBy
+  );
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
+
+  const generateSortingIndicator = (column) => {
+    return column.isSorted ? (
+      column.isSortedDesc ? (
+        <ArrowDownwardIcon sx={{ ml: 1 }} fontSize="inherit" />
+      ) : (
+        <ArrowUpwardIcon sx={{ ml: 1 }} fontSize="inherit" />
+      )
+    ) : (
+      ""
+    );
+  };
 
   return (
     <table {...getTableProps()}>
@@ -15,10 +36,7 @@ function CustomTable({ columns, data }) {
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
               <th
-                {...column.getHeaderProps([
-                  column.getSortByToggleProps(),
-                  { className: column.className },
-                ])}
+                {...column.getHeaderProps([{ className: column.className }])}
                 style={{
                   color: "#fff",
                   cursor: "pointer",
@@ -27,18 +45,11 @@ function CustomTable({ columns, data }) {
                   padding: "0 10px 10px 10px",
                 }}
               >
-                {column.render("Header")}
-                <span>
-                  {column.isSorted ? (
-                    column.isSortedDesc ? (
-                      <ArrowDownwardIcon sx={{ ml: 1 }} fontSize="inherit" />
-                    ) : (
-                      <ArrowUpwardIcon sx={{ ml: 1 }} fontSize="inherit" />
-                    )
-                  ) : (
-                    ""
-                  )}
-                </span>
+                <div {...column.getSortByToggleProps()}>
+                  {column.render("Header")}
+                  {generateSortingIndicator(column)}
+                </div>
+                <Filter column={column} />
               </th>
             ))}
           </tr>
@@ -72,4 +83,4 @@ function CustomTable({ columns, data }) {
   );
 }
 
-export default CustomTable;
+export default ReactTable;
