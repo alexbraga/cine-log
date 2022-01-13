@@ -101,6 +101,7 @@ function EditDialog(props) {
       {/* BUTTONS */}
       <DialogActions sx={{ mr: 2, mb: 1 }}>
         <Button
+          sx={{ mr: 1 }}
           onClick={() => {
             setEntryData({
               date: props.date,

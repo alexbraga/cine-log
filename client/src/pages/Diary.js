@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CustomCard from "../layout/CustomCard";
 import CustomSnackbar from "../components/CustomSnackbar";
-import Entries from "../components/Entries";
+import Entries from "../components/table/Entries";
 import Fab from "@mui/material/Fab";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 

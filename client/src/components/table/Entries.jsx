@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
-import DeleteDialog from "./DeleteDialog";
-import EditDialog from "./EditDialog";
+import ConfirmationDialog from "../dialogs/ConfirmationDialog";
+import EditDialog from "../dialogs/EditDialog";
 import ReactTable from "./ReactTable";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {
@@ -80,7 +80,7 @@ function Entries(props) {
       )}
 
       {openDelete && selectedRow && (
-        <DeleteDialog
+        <ConfirmationDialog
           isOpen={openDelete}
           onClose={handleClose}
           title="Delete this entry?"
@@ -92,7 +92,8 @@ function Entries(props) {
               will be removed. This action cannot be undone.
             </span>
           }
-          onRemove={() => {
+          confirmButton="Delete"
+          onConfirm={() => {
             props.onRemove(selectedRow._id, selectedRow.movieId);
           }}
         />

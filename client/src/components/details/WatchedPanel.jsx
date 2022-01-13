@@ -18,8 +18,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
-import CustomSnackbar from "./CustomSnackbar";
-import usePersistedState from "../hooks/usePersistedState";
+import CustomSnackbar from "../CustomSnackbar";
+import usePersistedState from "../../hooks/usePersistedState";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 function WatchedPanel(props) {
@@ -266,7 +266,9 @@ function WatchedPanel(props) {
 
           {/* BUTTONS */}
           <DialogActions sx={{ mr: 2, mb: 1 }}>
-            <Button onClick={handleClose}>Close</Button>
+            <Button sx={{ mr: 1 }} onClick={handleClose}>
+              Close
+            </Button>
             <Button variant="contained" onClick={props.onSubmit}>
               Save
             </Button>

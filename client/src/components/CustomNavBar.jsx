@@ -11,6 +11,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import ConfirmationDialog from "./dialogs/ConfirmationDialog";
 
 const buttonHover = {
   "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.1)" },
@@ -42,6 +43,8 @@ function CustomNavBar(props) {
   ];
 
   const [selectedIndex, setSelectedIndex] = useState("");
+
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   const navigate = useNavigate();
 
@@ -98,8 +101,8 @@ function CustomNavBar(props) {
         <ListItemButton
           sx={buttonHover}
           key="Logout"
-          onClick={(event) => {
-            handleLogout();
+          onClick={() => {
+            setOpenConfirmation(true);
           }}
         >
           <ListItemIcon>
@@ -108,6 +111,15 @@ function CustomNavBar(props) {
           <ListItemText primary="Logout" sx={{ ml: -2 }} />
         </ListItemButton>
       </List>
+
+      {/* DIALOG - LOGOUT CONFIRMATION */}
+      <ConfirmationDialog
+        isOpen={openConfirmation}
+        onClose={() => setOpenConfirmation(false)}
+        message={"Are you sure you want to exit?"}
+        confirmButton="Exit"
+        onConfirm={handleLogout}
+      />
     </div>
   );
 }

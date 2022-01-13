@@ -5,10 +5,11 @@ import CustomCard from "../layout/CustomCard";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import CustomSnackbar from "../components/CustomSnackbar";
-import DeleteDialog from "../components/DeleteDialog";
+import ConfirmationDialog from "../components/dialogs/ConfirmationDialog";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import DualButton from "../components/buttons/DualButton";
 
 function Settings() {
   const [userInfo, setUserInfo] = useState({
@@ -25,7 +26,7 @@ function Settings() {
   const [message, setMessage] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [severity, setSeverity] = useState("success");
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   const authContext = useContext(AuthContext);
 
@@ -163,7 +164,7 @@ function Settings() {
 
   // HANDLE SNACKBAR
   function handleClose(event, reason) {
-    setOpenDeleteDialog(false);
+    setOpenConfirmation(false);
     setOpenSnackbar(false);
 
     if (reason === "clickaway") {
@@ -217,24 +218,12 @@ function Settings() {
             {/* BUTTONS */}
             <Grid item xs={12}>
               {editInfo ? (
-                <div>
-                  <Button
-                    sx={{ mt: 2, mr: 1 }}
-                    variant="outlined"
-                    onClick={() => {
-                      setEditInfo(false);
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    sx={{ mt: 2 }}
-                    variant="contained"
-                    onClick={handleSubmitInfo}
-                  >
-                    Save
-                  </Button>
-                </div>
+                <DualButton
+                  firstButtonAction={() => setEditInfo(false)}
+                  firstButtonText="Cancel"
+                  secondButtonAction={handleSubmitInfo}
+                  secondButtonText="Save"
+                />
               ) : (
                 <Button
                   sx={{ mt: 2 }}
@@ -293,25 +282,15 @@ function Settings() {
             {/* BUTTONS */}
             <Grid item xs={12}>
               {changePswd ? (
-                <div>
-                  <Button
-                    sx={{ mt: 2, mr: 1 }}
-                    variant="outlined"
-                    onClick={() => {
-                      setChangePswd(false);
-                      clearFields();
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    sx={{ mt: 2 }}
-                    variant="contained"
-                    onClick={handleSubmitPswd}
-                  >
-                    Save
-                  </Button>
-                </div>
+                <DualButton
+                  firstButtonAction={() => {
+                    setEditInfo(false);
+                    clearFields();
+                  }}
+                  firstButtonText="Cancel"
+                  secondButtonAction={handleSubmitPswd}
+                  secondButtonText="Save"
+                />
               ) : (
                 <Button
                   sx={{ mt: 2 }}
@@ -330,7 +309,7 @@ function Settings() {
                 variant="outlined"
                 color="error"
                 onClick={() => {
-                  setOpenDeleteDialog(true);
+                  setOpenConfirmation(true);
                 }}
               >
                 Delete Account
@@ -339,14 +318,15 @@ function Settings() {
           </Grid>
 
           {/* DIALOG - DELETE CONFIRMATION */}
-          <DeleteDialog
-            isOpen={openDeleteDialog}
+          <ConfirmationDialog
+            isOpen={openConfirmation}
             onClose={handleClose}
             title="Confirm account deletion?"
             message={
               "All your data will be removed. This action cannot be undone."
             }
-            onRemove={deleteAccount}
+            confirmButton="The End"
+            onConfirm={deleteAccount}
           />
 
           {/* SNACKBAR */}

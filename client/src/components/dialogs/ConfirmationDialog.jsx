@@ -6,7 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-function DeleteDialog(props) {
+function ConfirmationDialog(props) {
   return (
     <div>
       <Dialog
@@ -30,16 +30,18 @@ function DeleteDialog(props) {
 
         {/* BUTTONS */}
         <DialogActions sx={{ mr: 2, mb: 1 }}>
-          <Button onClick={props.onClose}>Cancel</Button>
+          <Button sx={{ mr: 1 }} onClick={props.onClose}>
+            Cancel
+          </Button>
           <Button
             color="error"
             variant="contained"
             onClick={() => {
-              props.onRemove();
+              props.onConfirm();
               props.onClose();
             }}
           >
-            Delete
+            {props.confirmButton}
           </Button>
         </DialogActions>
       </Dialog>
@@ -47,4 +49,4 @@ function DeleteDialog(props) {
   );
 }
 
-export default DeleteDialog;
+export default ConfirmationDialog;

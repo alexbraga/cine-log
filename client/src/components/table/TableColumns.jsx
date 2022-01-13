@@ -7,7 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DescriptionIcon from "@mui/icons-material/Description";
-import DotsMenu from "./DotsMenu";
+import DotsMenu from "../DotsMenu";
 import { SelectColumnFilter } from "./Filters";
 
 const formatDate = (date) => format(new Date(date), "MMM dd, yyyy");

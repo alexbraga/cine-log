@@ -12,11 +12,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import axios from "axios";
-import UnwatchedPanel from "../components/UnwatchedPanel";
-import WatchedPanel from "../components/WatchedPanel";
+import UnwatchedPanel from "../components/details/UnwatchedPanel";
+import WatchedPanel from "../components/details/WatchedPanel";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import Credits from "../components/Credits";
-import Poster from "../components/Poster";
+import Credits from "../components/details/Credits";
+import Poster from "../components/details/Poster";
 import {
   getCast,
   getDirector,

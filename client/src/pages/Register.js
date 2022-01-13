@@ -69,7 +69,9 @@ function SignUp() {
           setOpen(true);
         });
     } else {
-      setMessage("Please enter a valid e-mail address");
+      setMessage(
+        "Please enter a valid e-mail address. Check for typos and extra spaces, then try again."
+      );
       setOpen(true);
     }
   }
