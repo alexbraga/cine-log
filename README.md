@@ -30,7 +30,7 @@
 
 ## About
 
-<p align="justify">Cine.log is a simple and lightweight Web App with fully responsive layout focused on keeping track of watched movies alongside with other records, like ratings, reviews and view count. It's built with MERN stack using a front-end almost entirely developed with Material UI library.</p>
+<p align="justify">Cine.log is a simple and lightweight Web App with fully responsive layout focused on keeping track of watched movies alongside with other records, like ratings, reviews and view count. It's built with MERN stack, with a RESTful API and using a front-end almost entirely developed with Material UI library.</p>
 
 ---
 
@@ -38,6 +38,7 @@
 
 - [x] Authentication with e-mail and password or via Google OAuth 2.0
 - [x] Password resetting
+- [x] RESTful API
 - [x] JWT based protection for API endpoints
 - [x] Access token and refresh token delivering
 - [x] Movie searching (data provided by TMDb)
