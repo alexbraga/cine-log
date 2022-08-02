@@ -10,7 +10,7 @@
   <a href="https://github.com/alexbraga/cine-log/commits/master"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/alexbraga/cine-log"></a>
   <img alt="Repository size" src="https://img.shields.io/github/repo-size/alexbraga/cine-log">
   <a href="https://github.com/alexbraga/cine-log/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/alexbraga/cine-log?label=license"></a>
-  <a href="https://cine-log.herokuapp.com"><img alt="App URL" src="https://img.shields.io/badge/heroku-app-%237159c1?style=flat&logo=heroku"></a>
+  <a href="https://cine-log.herokuapp.com"><img alt="Heroku build status" src="https://img.shields.io/github/deployments/alexbraga/cine-log/cine-log?label=heroku&logo=heroku"></a>
 </p>
 
 <h4 align="center">
@@ -61,10 +61,13 @@ This project is divided into two parts:
 
 ### Pre-requisites
 
-Before you begin, you will need to have the following tools installed on your
-machine: [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/) and
-[MongoDB](https://www.mongodb.com/try/download/community). In addition, you
-might also want an editor to work with the code, like
+Before getting started, you'll need to have the following tools installed on your machine:
+
+- [Git](https://git-scm.com)
+- [Node.js](https://nodejs.org/en/)
+- [MongoDB](https://www.mongodb.com/try/download/community)
+
+In addition, you might also want an editor to work with the code, like
 [VS Code](https://code.visualstudio.com/).
 
 #### Clone this repository
@@ -76,7 +79,6 @@ $ git clone https://github.com/alexbraga/cine-log.git
 #### Running the Back-end
 
 ```bash
-
 # Go to the server folder
 $ cd cine-log/server
 
@@ -87,13 +89,11 @@ $ npm install
 $ node server.js
 
 # The server will start at port 5000
-
 ```
 
 #### Running the Front-end
 
 ```bash
-
 # Go to the client folder
 $ cd cine-log/client
 
@@ -104,7 +104,6 @@ $ npm install
 $ npm start
 
 # The application will automatically open on browser at port 3000
-
 ```
 
 ---
@@ -158,12 +157,21 @@ The following tools were used in the construction of the project:
 ## How to contribute
 
 1. Fork the project
-2. Create a new branch with your changes: `git checkout -b my-amazing-feature`
-3. Save your changes and create a commit message (in present tense) telling what
-   you did: `git commit -m "Add my-amazing-feature"`
-4. Submit your changes: `git push origin my-feature`
+2. Create a new branch with your changes:
+```
+git checkout -b my-amazing-feature
+```
+3. Save your changes and create a commit message (in present tense) telling what you did:
+```
+git commit -m "Add my amazing feature"
+```
+4. Submit your changes:
+```
+git push origin my-amazing-feature
+```
+5. Create a pull request
 
-<p>At the moment any help with making the app fully accessible for visually impaired people will be very much appreciated.</p>
+- At the moment, any help with making the app fully accessible for visually impaired people will be very much appreciated.
 
 ---
 
