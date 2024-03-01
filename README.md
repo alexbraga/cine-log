@@ -1,20 +1,19 @@
 <h1 align="center">
-  <a href="https://cine-log.herokuapp.com">Cine.log </a>
+  Cine.log
 </h1>
 
 <h3 align="center">
-    Keep a diary of watched movies, give ratings and add your reviews
+    Keep a diary of watched movies, give ratings and add your own reviews
 </h3>
 
 <p align="center">
   <a href="https://github.com/alexbraga/cine-log/commits/master"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/alexbraga/cine-log"></a>
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/alexbraga/cine-log">
   <a href="https://github.com/alexbraga/cine-log/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/alexbraga/cine-log?label=license"></a>
   <a href="https://cine-log.herokuapp.com"><img alt="Heroku build status" src="https://img.shields.io/github/deployments/alexbraga/cine-log/cine-log?label=heroku&logo=heroku"></a>
 </p>
 
 <h4 align="center">
-	 Status: Deployed
+	 Status: Finished
 </h4>
 
 <p align="center">
@@ -36,16 +35,21 @@
 
 ## Features
 
-- [x] Authentication with e-mail and password or via Google OAuth 2.0
-- [x] Password resetting
-- [x] RESTful API
-- [x] JWT based protection for API endpoints
-- [x] Access token and refresh token delivering
-- [x] Movie searching (data provided by TMDb)
-- [x] Access to movie info (data provided by TMDb)
-- [x] Movie list sorting and filtering
-- [x] Save/edit ratings and reviews
-- [x] Edit user info and password change
+- Authentication with e-mail and password or via Google OAuth 2.0
+- Password resetting
+- RESTful API
+- JWT based protection for API endpoints
+- Access token and refresh token delivering
+- Movie searching (data provided by TMDb)
+- Access to movie info (data provided by TMDb)
+- Movie list sorting and filtering
+- Save/edit ratings and reviews
+- Edit user info and password change
+
+---
+
+## Todo
+
 - [ ] E-mail validation
 - [ ] Create custom movie lists
 - [ ] Dashboard with insights on user behavior
@@ -65,6 +69,7 @@ Before getting started, you'll need to have the following tools installed on you
 
 - [Git](https://git-scm.com)
 - [Node.js](https://nodejs.org/en/)
+- [npm](https://npmjs.com)
 - [MongoDB](https://www.mongodb.com/try/download/community)
 
 In addition, you might also want an editor to work with the code, like
@@ -103,7 +108,7 @@ $ npm install
 # Run the application in development mode
 $ npm start
 
-# The application will automatically open on browser at port 3000
+# The application will automatically open on your browser at port 3000
 ```
 
 ---
@@ -177,11 +182,12 @@ git push origin my-amazing-feature
 
 ## Author
 
-<p>Alexandre Braga</p>
+<h4>Alexandre Braga</h4>
 
-[![Twitter Badge](https://img.shields.io/badge/-@_alex_braga-1ca0f1?style=flat-square&labelColor=1ca0f1&logo=twitter&logoColor=white)](https://twitter.com/_alex_braga)
-[![Linkedin Badge](https://img.shields.io/badge/-Alexandre%20Braga-blue?style=flat-square&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/alexgbraga/)
-[![Gmail Badge](https://img.shields.io/badge/-contato@alexbraga.com.br-c14438?style=flat-square&logo=Gmail&logoColor=white)](mailto:contato@alexbraga.com.br)
+<div>
+<a href="https://www.linkedin.com/in/alexgbraga/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-blue?style=for-the-badge&logo=Linkedin&logoColor=white" alt="LinkedIn"></a>&nbsp;
+<a href="mailto:contato@alexbraga.com.br" target="_blank"><img src="https://img.shields.io/badge/-email-c14438?style=for-the-badge&logo=Gmail&logoColor=white" alt="E-Mail"></a>
+</div>
 
 ---
 
