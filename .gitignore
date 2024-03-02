@@ -120,3 +120,4 @@ dist
 # misc
 .directory
 .DS_Store
+server/app.yaml
