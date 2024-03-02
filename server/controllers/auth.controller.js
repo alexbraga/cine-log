@@ -1,9 +1,21 @@
 const passport = require("passport");
 const { OAuth2Client } = require("google-auth-library");
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const JWT = require("jsonwebtoken");
 const User = require("../models/user.model");
 const Token = require("../models/token.model");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+const handleTokens = (refreshToken, res, callback) => {
+  Token.findOneAndDelete({ token: refreshToken }, (err, foundToken) => {
+    if (!err) {
+      res.clearCookie("access_token");
+      res.clearCookie("refresh_token");
+      callback();
+    } else {
+      res.sendStatus(500);
+    }
+  });
+};
 
 const generateTokens = (user, response) => {
   const accessToken = user.generateJWT();
@@ -21,7 +33,7 @@ const generateTokens = (user, response) => {
   });
 };
 
-exports.register = async (req, res) => {
+const register = async (req, res) => {
   try {
     User.register(
       {
@@ -50,7 +62,7 @@ exports.register = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
+const login = async (req, res) => {
   try {
     await passport.authenticate(
       "local",
@@ -81,35 +93,27 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.logout = async (req, res) => {
+const logout = async (req, res) => {
   try {
     const refreshToken = req.cookies["refresh_token"];
 
-    Token.findOneAndDelete({ token: refreshToken }, (err, foundToken) => {
-      if (!err) {
-        res.clearCookie("access_token");
-        res.clearCookie("refresh_token");
-        req.logout();
-
-        res.status(200).json({
-          success: true,
-          user: "",
-          isAuthenticated: false,
-        });
-      } else {
-        res.sendStatus(500);
-      }
+    handleTokens(refreshToken, res, () => {
+      req.logout();
+      res.status(200).json({
+        success: true,
+        user: "",
+        isAuthenticated: false,
+      });
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-exports.google = async (req, res) => {
+const google = async (req, res) => {
   try {
     const { token } = req.body;
 
-    // Verify and decode the token
     const ticket = await client.verifyIdToken({
       idToken: token,
       audience: process.env.GOOGLE_CLIENT_ID,
@@ -118,7 +122,6 @@ exports.google = async (req, res) => {
     const { given_name, family_name, email, sub } = ticket.getPayload();
 
     User.findOne({ email: email }, (err, user) => {
-      // Create new user if it doesn't exist, then provide access and refresh tokens
       if (!user) {
         const newUser = new User({
           first_name: given_name,
@@ -135,12 +138,9 @@ exports.google = async (req, res) => {
           isAuthenticated: true,
           user: given_name,
         });
-      } else if (user) {
-        // Check if user it's already associated with given `googleId` and update it if needed, then provide access and refresh tokens
-        if (!user.googleId) {
-          user.googleId = sub;
-          user.save();
-        }
+      } else if (user && !user.googleId) {
+        user.googleId = sub;
+        user.save();
 
         generateTokens(user, res);
 
@@ -157,45 +157,44 @@ exports.google = async (req, res) => {
   }
 };
 
-exports.refreshToken = async (req, res) => {
+const refreshToken = async (req, res) => {
   try {
     const refreshToken = req.cookies["refresh_token"];
 
-    // Query database for provided refresh token and verify if it's still valid, then generate new access token
-    Token.findOne({ token: refreshToken }, (err, foundToken) => {
-      if (!foundToken) {
-        return res.sendStatus(403);
-      } else {
-        JWT.verify(
-          refreshToken,
-          process.env.REFRESH_JWT_SECRET,
-          (err, token) => {
-            if (err) {
-              return res.sendStatus(403);
-            } else {
-              const accessToken = JWT.sign(
-                {
-                  iss: token.iss,
-                  sub: token.sub,
-                },
-                process.env.JWT_SECRET,
-                { expiresIn: "15min" }
-              );
+    handleTokens(refreshToken, res, () => {
+      JWT.verify(refreshToken, process.env.REFRESH_JWT_SECRET, (err, token) => {
+        if (err) {
+          return res.sendStatus(403);
+        } else {
+          const accessToken = JWT.sign(
+            {
+              iss: token.iss,
+              sub: token.sub,
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "15min" }
+          );
 
-              res.cookie("access_token", accessToken, {
-                httpOnly: true,
-                sameSite: true,
-              });
+          res.cookie("access_token", accessToken, {
+            httpOnly: true,
+            sameSite: true,
+          });
 
-              res
-                .status(200)
-                .json({ message: "Successfully refreshed access token" });
-            }
-          }
-        );
-      }
+          res
+            .status(200)
+            .json({ message: "Successfully refreshed access token" });
+        }
+      });
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+};
+
+module.exports = {
+  register,
+  login,
+  logout,
+  google,
+  refreshToken,
 };

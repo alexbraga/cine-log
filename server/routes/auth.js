@@ -17,8 +17,9 @@ router.get("/token", Auth.refreshToken);
 // PASSWORD RESET
 router.post("/recover", Password.recover);
 
-router.get("/reset/:token", Password.reset);
-
-router.post("/reset/:token", Password.resetPassword);
+router
+  .route("/reset/:token")
+  .get(Password.reset)
+  .post(Password.resetPassword);
 
 module.exports = router;

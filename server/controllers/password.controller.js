@@ -1,7 +1,34 @@
 const User = require("../models/user.model");
 const { sendEmail } = require("../utils/sendEmail");
 
-exports.recover = async (req, res) => {
+const handlePasswordReset = async (user, res, successMessage) => {
+  try {
+    // Set the new password
+    await user.setPassword(req.body.password);
+
+    // Clear reset token and expiry
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    // Save the updated user object
+    await user.save();
+
+    // Send confirmation email
+    let subject = "Your password has been changed";
+    let to = user.email;
+    let from = process.env.FROM_EMAIL;
+    let html = `<p>Hi, ${user.first_name}</p><br />
+                <p>This is a confirmation that the password for your account associated with the e-mail <strong>${user.email}</strong> has just been changed.</p>`;
+
+    await sendEmail({ to, from, subject, html });
+
+    res.status(200).json({ message: successMessage });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const recover = async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -15,7 +42,7 @@ exports.recover = async (req, res) => {
           " is not associated with any account. Double-check your e-mail address and try again.",
       });
 
-    //Generate and set password reset token
+    // Generate and set password reset token
     user.generatePasswordReset();
 
     // Save the updated user object
@@ -45,7 +72,7 @@ exports.recover = async (req, res) => {
   }
 };
 
-exports.reset = async (req, res) => {
+const reset = async (req, res) => {
   try {
     const { token } = req.params;
 
@@ -65,7 +92,7 @@ exports.reset = async (req, res) => {
   }
 };
 
-exports.resetPassword = async (req, res) => {
+const resetPassword = async (req, res) => {
   try {
     const { token } = req.params;
 
@@ -79,25 +106,15 @@ exports.resetPassword = async (req, res) => {
         .status(401)
         .json({ message: "Password reset token is invalid or has expired." });
 
-    //Set the new password
-    user.setPassword(req.body.password).then(() => {
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpires = undefined;
-
-      // Save the updated user object
-      user.save();
-
-      res.status(200).json({ message: "Your password has been updated." });
-    });
-
-    let subject = "Your password has been changed";
-    let to = user.email;
-    let from = process.env.FROM_EMAIL;
-    let html = `<p>Hi, ${user.first_name}</p><br />
-                <p>This is a confirmation that the password for your account associated with the e-mail <strong>${user.email}</strong> has just been changed.</p>`;
-
-    await sendEmail({ to, from, subject, html });
+    // Handle password reset
+    handlePasswordReset(user, res, "Your password has been updated.");
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+};
+
+module.exports = {
+  recover,
+  reset,
+  resetPassword,
 };
