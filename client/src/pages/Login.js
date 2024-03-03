@@ -16,6 +16,10 @@ import CustomContainer from "../layout/CustomContainer";
 function Login() {
   const isProduction = process.env.NODE_ENV === "production";
 
+  const serverUrl = isProduction
+    ? process.env.REACT_APP_SERVER_URL_PROD
+    : process.env.REACT_APP_SERVER_URL_DEV;
+
   const authContext = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -49,7 +53,7 @@ function Login() {
 
     axios
       .create()
-      .post("/api/auth/login", userInfo)
+      .post(`${serverUrl}/api/auth/login`, userInfo)
       .then((response) => {
         // On successful authentication, set `user` to user's first name and `isAuthenticated` to true, then redirect to the route that user was trying to access, otherwise redirect to `/diary`
         const { user, isAuthenticated } = response.data;
@@ -70,7 +74,7 @@ function Login() {
   function handleSuccess(response) {
     axios
       .create()
-      .post("/api/auth/google", { token: response.tokenId })
+      .post(`${serverUrl}/api/auth/google`, { token: response.tokenId })
       .then((res) => {
         const { user, isAuthenticated } = res.data;
 

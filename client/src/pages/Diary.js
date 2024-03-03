@@ -7,6 +7,12 @@ import Fab from "@mui/material/Fab";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 function Diary() {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  const serverUrl = isProduction
+    ? process.env.REACT_APP_SERVER_URL_PROD
+    : process.env.REACT_APP_SERVER_URL_DEV;
+
   const [entries, setEntries] = useState([]);
 
   const [showList, setShowList] = useState(true);
@@ -22,7 +28,7 @@ function Diary() {
   // GET USER'S DIARY ENTRIES
   useEffect(() => {
     axios
-      .get("/api/diary")
+      .get(`${serverUrl}/api/diary`)
       .then((response) => {
         setEntries(response.data);
 
@@ -48,7 +54,7 @@ function Diary() {
   // HANDLE ENTRIES
   // Actions passed to the "Entries" component to be executed from the "Edit Dialog" on saving updates
   function editEntry(entryId, data) {
-    axios.patch(`/api/diary/${entryId}`, data).then((response) => {
+    axios.patch(`${serverUrl}/api/diary/${entryId}`, data).then((response) => {
       // On successful response display success message and change `isUpdated` state to force a re-render of `useEffect()` and update diary list info
       setSnackMessage(response.data.message);
       setOpenSnackbar(true);
@@ -59,7 +65,7 @@ function Diary() {
   // Actions passed to the "Entries" component to be executed from the "Delete Dialog" on deleting entry
   function deleteEntry(entryId, movieId) {
     axios
-      .delete(`/api/diary/${entryId}`, { data: { movieId: movieId } })
+      .delete(`${serverUrl}/api/diary/${entryId}`, { data: { movieId: movieId } })
       .then((response) => {
         // On successful response display success message
         setSnackMessage(response.data.message);

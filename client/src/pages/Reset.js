@@ -10,6 +10,12 @@ import axios from "axios";
 import CustomContainer from "../layout/CustomContainer";
 
 function Reset() {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  const serverUrl = isProduction
+    ? process.env.REACT_APP_SERVER_URL_PROD
+    : process.env.REACT_APP_SERVER_URL_DEV;
+
   const [showForm, setShowForm] = useState(false);
 
   const [password, setPassword] = useState({
@@ -31,7 +37,7 @@ function Reset() {
     // If request with token provided on `location.pathname` is valid, show password change form; otherwise display error message
     axios
       .create()
-      .get(`/api/auth${location.pathname}`)
+      .get(`${serverUrl}/api/auth${location.pathname}`)
       .then((response) => {
         if (response.status === 200) {
           setShowForm(true);
@@ -43,6 +49,7 @@ function Reset() {
         setMessage(error.response.data.message);
         setOpen(true);
       });
+      
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -72,7 +79,7 @@ function Reset() {
     if (validateForm()) {
       axios
         .create()
-        .post(`/api/auth${location.pathname}`, {
+        .post(`${serverUrl}/api/auth${location.pathname}`, {
           password: password.new_password,
         })
         .then((response) => {

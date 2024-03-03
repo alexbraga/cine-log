@@ -4,6 +4,12 @@ import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 
 function PrivateOutlet() {
+  const isProduction = process.env.NODE_ENV === "production";
+  
+  const serverUrl = isProduction
+    ? process.env.REACT_APP_SERVER_URL_PROD
+    : process.env.REACT_APP_SERVER_URL_DEV;
+
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,7 +26,7 @@ function PrivateOutlet() {
         originalRequest._retry = true;
 
         // If original request return error 401, send GET request to get new access token, then retry original request
-        return axios.get("/api/auth/token").then((res) => {
+        return axios.get(`${serverUrl}/api/auth/token`).then((res) => {
           if (res.status === 200) {
             return axios(originalRequest);
           }

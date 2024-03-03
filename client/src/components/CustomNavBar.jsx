@@ -21,6 +21,12 @@ const buttonHover = {
 };
 
 function CustomNavBar(props) {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  const serverUrl = isProduction
+    ? process.env.REACT_APP_SERVER_URL_PROD
+    : process.env.REACT_APP_SERVER_URL_DEV;
+
   const authContext = useContext(AuthContext);
   const matches = useMediaQuery("(max-width:1535px)");
 
@@ -55,7 +61,7 @@ function CustomNavBar(props) {
   function handleLogout() {
     axios
       .create()
-      .get("/api/auth/logout")
+      .get(`${serverUrl}/api/auth/logout`)
       .then((response) => {
         const { user, isAuthenticated } = response.data;
 

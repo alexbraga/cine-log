@@ -10,6 +10,12 @@ import axios from "axios";
 import CustomContainer from "../layout/CustomContainer";
 
 function Recover() {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  const serverUrl = isProduction
+    ? process.env.REACT_APP_SERVER_URL_PROD
+    : process.env.REACT_APP_SERVER_URL_DEV;
+    
   const [email, setEmail] = useState("");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -27,7 +33,7 @@ function Recover() {
     // Submit reset password request. If email is valid and user is found, display success message, otherwise display error message
     axios
       .create()
-      .post("/api/auth/recover", { email: email })
+      .post(`${serverUrl}/api/auth/recover`, { email: email })
       .then((response) => {
         if (response.status === 200) {
           setMessageSeverity("success");

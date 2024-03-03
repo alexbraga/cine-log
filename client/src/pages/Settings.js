@@ -12,6 +12,12 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import DualButton from "../components/buttons/DualButton";
 
 function Settings() {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  const serverUrl = isProduction
+    ? process.env.REACT_APP_SERVER_URL_PROD
+    : process.env.REACT_APP_SERVER_URL_DEV;
+
   const [userInfo, setUserInfo] = useState({
     first_name: "",
     last_name: "",
@@ -38,7 +44,7 @@ function Settings() {
     window.scrollTo({ top: 0, left: 0 });
 
     axios
-      .get("/api/settings")
+      .get(`${serverUrl}/api/settings`)
       .then((response) => {
         const { first_name, last_name, email } = response.data;
 
@@ -54,6 +60,7 @@ function Settings() {
       .catch((err) => {
         console.log(err);
       });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editInfo]);
 
@@ -73,7 +80,7 @@ function Settings() {
   // HANDLE PERSONAL INFO
   function handleSubmitInfo() {
     axios
-      .patch("/api/settings/user", userInfo)
+      .patch(`${serverUrl}/api/settings/user`, userInfo)
       .then((response) => {
         setEditInfo(false);
         setMessage(response.data.message);
@@ -112,7 +119,7 @@ function Settings() {
   function handleSubmitPswd() {
     if (validateForm()) {
       axios
-        .patch("/api/settings/password", {
+        .patch(`${serverUrl}/api/settings/password`, {
           old_password: userInfo.old_password,
           password: userInfo.new_password,
         })
@@ -143,14 +150,14 @@ function Settings() {
   function deleteAccount() {
     axios
       .create()
-      .delete("/api/settings")
+      .delete(`${serverUrl}/api/settings`)
       .then((response) => {
         return;
       });
 
     axios
       .create()
-      .get("/api/auth/logout")
+      .get(`${serverUrl}/api/auth/logout`)
       .then((response) => {
         const { user, isAuthenticated } = response.data;
 

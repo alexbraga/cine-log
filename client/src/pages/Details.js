@@ -25,6 +25,12 @@ import {
 } from "../utils/getMovieDetails";
 
 function Details() {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  const serverUrl = isProduction
+    ? process.env.REACT_APP_SERVER_URL_PROD
+    : process.env.REACT_APP_SERVER_URL_DEV;
+
   const matches = useMediaQuery("(max-width:718px)");
 
   const myRef = useRef(null);
@@ -46,13 +52,15 @@ function Details() {
     const url = new URL(window.location.href);
 
     axios
-      .get(`/api${url.pathname}`)
+      .get(`${serverUrl}/api${url.pathname}`)
       .then((response) => {
         setDetails(response.data);
       })
       .catch((err) => {
         console.log(err);
       });
+      
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUpdated]);
 
   const baseURL = "https://image.tmdb.org/t/p/w342";
