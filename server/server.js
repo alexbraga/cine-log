@@ -20,9 +20,11 @@ app.use(passport.initialize());
 
 const isProduction = process.env.NODE_ENV === "production";
 
-// Priority serve any static files
-isProduction &&
-  app.use(express.static(path.resolve(__dirname, "../client/build")));
+// Uncomment the 3 lines below if you are NOT deploying server and client in separate locations
+
+// // Priority serve any static files
+// isProduction &&
+//   app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 // CONNECT TO DATABASE
 // db config
@@ -47,11 +49,13 @@ app.use("/api/diary", diaryRouter);
 app.use("/api/results", resultsRouter);
 app.use("/api/settings", settingsRouter);
 
-// All remaining requests return the React app, so it can handle routing (solution found at: https://github.com/mars/heroku-cra-node/blob/c414a25250da57c73589163885e949e6f76c06e4/server/index.js#L35)
-isProduction &&
-  app.get("*", function (request, response) {
-    response.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-  });
+// Uncomment the code below if you are NOT deploying server and client in separate locations
+
+// // All remaining requests return the React app, so it can handle routing (solution found at: https://github.com/mars/heroku-cra-node/blob/c414a25250da57c73589163885e949e6f76c06e4/server/index.js#L35)
+// isProduction &&
+//   app.get("*", function (request, response) {
+//     response.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+//   });
 
 // DEFINE PORTS
 const port = process.env.PORT || 5000;
