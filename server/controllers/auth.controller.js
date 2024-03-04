@@ -23,12 +23,16 @@ const generateTokens = (user, response) => {
 
   response.cookie("access_token", accessToken, {
     httpOnly: true,
-    sameSite: true,
+    sameSite: "None",
+    secure: process.env.NODE_ENV === "production",
+    partitioned: true,
   });
 
   response.cookie("refresh_token", refreshToken, {
     httpOnly: true,
-    sameSite: true,
+    sameSite: "None",
+    secure: process.env.NODE_ENV === "production",
+    partitioned: true,
     maxAge: 3600 * 24 * 90 * 1000,
   });
 };
@@ -161,30 +165,30 @@ const refreshToken = async (req, res) => {
   try {
     const refreshToken = req.cookies["refresh_token"];
 
-    handleTokens(refreshToken, res, () => {
-      JWT.verify(refreshToken, process.env.REFRESH_JWT_SECRET, (err, token) => {
-        if (err) {
-          return res.sendStatus(403);
-        } else {
-          const accessToken = JWT.sign(
-            {
-              iss: token.iss,
-              sub: token.sub,
-            },
-            process.env.JWT_SECRET,
-            { expiresIn: "15min" }
-          );
+    JWT.verify(refreshToken, process.env.REFRESH_JWT_SECRET, (err, token) => {
+      if (err) {
+        return res.sendStatus(403);
+      } else {
+        const accessToken = JWT.sign(
+          {
+            iss: token.iss,
+            sub: token.sub,
+          },
+          process.env.JWT_SECRET,
+          { expiresIn: "15min" }
+        );
 
-          res.cookie("access_token", accessToken, {
-            httpOnly: true,
-            sameSite: true,
-          });
+        res.cookie("access_token", accessToken, {
+          httpOnly: true,
+          sameSite: "None",
+          secure: process.env.NODE_ENV === "production",
+          partitioned: true,
+        });
 
-          res
-            .status(200)
-            .json({ message: "Successfully refreshed access token" });
-        }
-      });
+        res
+          .status(200)
+          .json({ message: "Successfully refreshed access token" });
+      }
     });
   } catch (error) {
     res.status(500).json({ message: error.message });

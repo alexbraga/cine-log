@@ -12,13 +12,24 @@ require("dotenv").config();
 // INITIATE APP
 const app = express();
 
+const isProduction = process.env.NODE_ENV === "production";
+
+const clientURL = isProduction
+  ? process.env.CLIENT_URL_PROD
+  : process.env.CLIENT_URL_DEV;
+
+// CONFIGURE CORS
+const corsOptions = {
+  origin: clientURL,
+  credentials: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+};
+
 // MIDDLEWARE
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(passport.initialize());
-
-const isProduction = process.env.NODE_ENV === "production";
 
 // Uncomment the 3 lines below if you are NOT deploying server and client in separate locations
 
