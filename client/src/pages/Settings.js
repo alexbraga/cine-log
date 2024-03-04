@@ -7,17 +7,11 @@ import Button from "@mui/material/Button";
 import CustomSnackbar from "../components/CustomSnackbar";
 import ConfirmationDialog from "../components/dialogs/ConfirmationDialog";
 import { AuthContext } from "../context/AuthContext";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import DualButton from "../components/buttons/DualButton";
 
 function Settings() {
-  const isProduction = process.env.NODE_ENV === "production";
-
-  const serverUrl = isProduction
-    ? process.env.REACT_APP_SERVER_URL_PROD
-    : process.env.REACT_APP_SERVER_URL_DEV;
-
   const [userInfo, setUserInfo] = useState({
     first_name: "",
     last_name: "",
@@ -44,7 +38,7 @@ function Settings() {
     window.scrollTo({ top: 0, left: 0 });
 
     axios
-      .get(`${serverUrl}/api/settings`)
+      .get("/api/settings")
       .then((response) => {
         const { first_name, last_name, email } = response.data;
 
@@ -80,7 +74,7 @@ function Settings() {
   // HANDLE PERSONAL INFO
   function handleSubmitInfo() {
     axios
-      .patch(`${serverUrl}/api/settings/user`, userInfo)
+      .patch("/api/settings/user", userInfo)
       .then((response) => {
         setEditInfo(false);
         setMessage(response.data.message);
@@ -119,7 +113,7 @@ function Settings() {
   function handleSubmitPswd() {
     if (validateForm()) {
       axios
-        .patch(`${serverUrl}/api/settings/password`, {
+        .patch("/api/settings/password", {
           old_password: userInfo.old_password,
           password: userInfo.new_password,
         })
@@ -149,15 +143,13 @@ function Settings() {
   // Delete user account, clear `localStorage` and redirect to `/home`
   function deleteAccount() {
     axios
-      .create()
-      .delete(`${serverUrl}/api/settings`)
+      .delete("/api/settings")
       .then((response) => {
         return;
       });
 
     axios
-      .create()
-      .get(`${serverUrl}/api/auth/logout`)
+      .get("/api/auth/logout")
       .then((response) => {
         const { user, isAuthenticated } = response.data;
 

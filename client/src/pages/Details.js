@@ -11,7 +11,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import CloseIcon from "@mui/icons-material/Close";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import UnwatchedPanel from "../components/details/UnwatchedPanel";
 import WatchedPanel from "../components/details/WatchedPanel";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -25,12 +25,6 @@ import {
 } from "../utils/getMovieDetails";
 
 function Details() {
-  const isProduction = process.env.NODE_ENV === "production";
-
-  const serverUrl = isProduction
-    ? process.env.REACT_APP_SERVER_URL_PROD
-    : process.env.REACT_APP_SERVER_URL_DEV;
-
   const matches = useMediaQuery("(max-width:718px)");
 
   const myRef = useRef(null);
@@ -52,14 +46,14 @@ function Details() {
     const url = new URL(window.location.href);
 
     axios
-      .get(`${serverUrl}/api${url.pathname}`)
+      .get(`/api${url.pathname}`)
       .then((response) => {
         setDetails(response.data);
       })
       .catch((err) => {
         console.log(err);
       });
-      
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUpdated]);
 

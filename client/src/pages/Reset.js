@@ -6,16 +6,10 @@ import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
 import Link from "@mui/material/Link";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import CustomContainer from "../layout/CustomContainer";
 
 function Reset() {
-  const isProduction = process.env.NODE_ENV === "production";
-
-  const serverUrl = isProduction
-    ? process.env.REACT_APP_SERVER_URL_PROD
-    : process.env.REACT_APP_SERVER_URL_DEV;
-
   const [showForm, setShowForm] = useState(false);
 
   const [password, setPassword] = useState({
@@ -36,8 +30,7 @@ function Reset() {
   useEffect(() => {
     // If request with token provided on `location.pathname` is valid, show password change form; otherwise display error message
     axios
-      .create()
-      .get(`${serverUrl}/api/auth${location.pathname}`)
+      .get(`/api/auth${location.pathname}`)
       .then((response) => {
         if (response.status === 200) {
           setShowForm(true);
@@ -49,7 +42,7 @@ function Reset() {
         setMessage(error.response.data.message);
         setOpen(true);
       });
-      
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -78,8 +71,7 @@ function Reset() {
     // If new password pass the validation check, make a POST request with the new password. On success, display success message; otherwise display error message
     if (validateForm()) {
       axios
-        .create()
-        .post(`${serverUrl}/api/auth${location.pathname}`, {
+        .post(`/api/auth${location.pathname}`, {
           password: password.new_password,
         })
         .then((response) => {

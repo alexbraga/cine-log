@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import CustomCard from "../layout/CustomCard";
 import CustomSnackbar from "../components/CustomSnackbar";
 import Entries from "../components/table/Entries";
@@ -7,12 +7,6 @@ import Fab from "@mui/material/Fab";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 function Diary() {
-  const isProduction = process.env.NODE_ENV === "production";
-
-  const serverUrl = isProduction
-    ? process.env.REACT_APP_SERVER_URL_PROD
-    : process.env.REACT_APP_SERVER_URL_DEV;
-
   const [entries, setEntries] = useState([]);
 
   const [showList, setShowList] = useState(true);
@@ -28,7 +22,7 @@ function Diary() {
   // GET USER'S DIARY ENTRIES
   useEffect(() => {
     axios
-      .get(`${serverUrl}/api/diary`)
+      .get("/api/diary")
       .then((response) => {
         setEntries(response.data);
 
@@ -54,7 +48,7 @@ function Diary() {
   // HANDLE ENTRIES
   // Actions passed to the "Entries" component to be executed from the "Edit Dialog" on saving updates
   function editEntry(entryId, data) {
-    axios.patch(`${serverUrl}/api/diary/${entryId}`, data).then((response) => {
+    axios.patch(`/api/diary/${entryId}`, data).then((response) => {
       // On successful response display success message and change `isUpdated` state to force a re-render of `useEffect()` and update diary list info
       setSnackMessage(response.data.message);
       setOpenSnackbar(true);
@@ -65,7 +59,7 @@ function Diary() {
   // Actions passed to the "Entries" component to be executed from the "Delete Dialog" on deleting entry
   function deleteEntry(entryId, movieId) {
     axios
-      .delete(`${serverUrl}/api/diary/${entryId}`, { data: { movieId: movieId } })
+      .delete(`/api/diary/${entryId}`, { data: { movieId: movieId } })
       .then((response) => {
         // On successful response display success message
         setSnackMessage(response.data.message);

@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import { AuthContext } from "../context/AuthContext";
 import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
@@ -14,10 +14,6 @@ import CustomContainer from "../layout/CustomContainer";
 
 function SignUp() {
   const isProduction = process.env.NODE_ENV === "production";
-
-  const serverUrl = isProduction
-    ? process.env.REACT_APP_SERVER_URL_PROD
-    : process.env.REACT_APP_SERVER_URL_DEV;
 
   const authContext = useContext(AuthContext);
 
@@ -56,8 +52,7 @@ function SignUp() {
 
     if (validateForm(userInfo.email)) {
       axios
-        .create()
-        .post(`${serverUrl}/api/auth/register`, userInfo)
+        .post("/api/auth/register", userInfo)
         .then((response) => {
           // On successful authentication, set `user` to user's first name and `isAuthenticated` to true, then redirect to `/diary`
           const { user, isAuthenticated } = response.data;
@@ -83,8 +78,7 @@ function SignUp() {
   // HANDLE GOOGLE AUTHENTICATION
   function handleSuccess(response) {
     axios
-      .create()
-      .post(`${serverUrl}/api/auth/google`, { token: response.tokenId })
+      .post("/api/auth/google", { token: response.tokenId })
       .then((res) => {
         const { user, isAuthenticated } = res.data;
 

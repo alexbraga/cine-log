@@ -6,16 +6,10 @@ import List from "@mui/material/List";
 import ResultItem from "../components/ResultItem";
 import Pagination from "@mui/material/Pagination";
 import CustomCard from "../layout/CustomCard";
-import axios from "axios";
+import axios from "../config/axiosConfig";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 function Results() {
-  const isProduction = process.env.NODE_ENV === "production";
-
-  const serverUrl = isProduction
-    ? process.env.REACT_APP_SERVER_URL_PROD
-    : process.env.REACT_APP_SERVER_URL_DEV;
-
   const matches = useMediaQuery("(max-width:767px)");
 
   const navigate = useNavigate();
@@ -36,14 +30,14 @@ function Results() {
 
     // On successful response, assign the results to `results` array in `details` object
     axios
-      .get(`${serverUrl}/api/results/${query}`)
+      .get(`/api/results/${query}`)
       .then((response) => {
         setDetails(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-      
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 

@@ -5,7 +5,7 @@ import axios from "axios";
 
 function PrivateOutlet() {
   const isProduction = process.env.NODE_ENV === "production";
-  
+
   const serverUrl = isProduction
     ? process.env.REACT_APP_SERVER_URL_PROD
     : process.env.REACT_APP_SERVER_URL_DEV;
@@ -26,7 +26,7 @@ function PrivateOutlet() {
         originalRequest._retry = true;
 
         // If original request return error 401, send GET request to get new access token, then retry original request
-        return axios.get(`${serverUrl}/api/auth/token`).then((res) => {
+        return axios.create({withCredentials: true}).get(`${serverUrl}/api/auth/token`).then((res) => {
           if (res.status === 200) {
             return axios(originalRequest);
           }
