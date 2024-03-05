@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
-import DateAdapter from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import TextField from "@mui/material/TextField";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 import Button from "@mui/material/Button";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import Card from "@mui/material/Card";
@@ -251,15 +250,14 @@ function WatchedPanel(props) {
           <DialogTitle>Choose a date</DialogTitle>
           <DialogContent style={{ paddingTop: "20px" }}>
             {/* DATE PICKER */}
-            <LocalizationProvider dateAdapter={DateAdapter}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <MobileDatePicker
                 label="Watched on"
-                inputFormat="MMM dd, yyyy"
+                format="MMMM D, YYYY"
                 disableMaskedInput={true}
                 name="date"
-                value={props.date}
+                value={dayjs(props.date)}
                 onChange={props.onDateChange}
-                renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
           </DialogContent>
