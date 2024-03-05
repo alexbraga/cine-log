@@ -75,7 +75,8 @@ function Header() {
 
     if (event.key === "Enter" && searchInput !== "") {
       navigate({
-        pathname: `/results${query}`,
+        pathname: "/results",
+        search: query
       });
 
       setSearchInput("");
