@@ -9,7 +9,7 @@ import StarIcon from "@mui/icons-material/Star";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import TextareaAutosize from "@mui/material/TextareaAutosize";
+import TextArea from "../details/TextArea";
 import Typography from "@mui/material/Typography";
 
 function EditDialog(props) {
@@ -85,13 +85,8 @@ function EditDialog(props) {
 
         {/* REVIEW */}
         <Typography>Review:</Typography>
-        <TextareaAutosize
-          name="review"
+        <TextArea
           value={entryData.review}
-          aria-label="empty textarea"
-          placeholder="Add your review..."
-          minRows={3}
-          style={{ width: "100%", resize: "none", overflow: "auto" }}
           onChange={handleReview}
         />
       </DialogContent>

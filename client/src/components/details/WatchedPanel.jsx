@@ -5,7 +5,7 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import Button from "@mui/material/Button";
-import TextareaAutosize from "@mui/material/TextareaAutosize";
+import TextArea from "../details/TextArea"
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -117,13 +117,8 @@ function WatchedPanel(props) {
         {edit ? (
           <div>
             <Typography>Review:</Typography>
-            <TextareaAutosize
-              name="review"
+            <TextArea
               value={userData.review}
-              aria-label="textarea"
-              placeholder="Add your review..."
-              minRows={3}
-              style={{ width: "100%", resize: "none", overflow: "auto" }}
               onChange={handleReview}
             />
           </div>
