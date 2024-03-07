@@ -9,7 +9,7 @@ import axios from "../config/axiosConfig";
 import { AuthContext } from "../context/AuthContext";
 import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
-import GoogleLogin from "react-google-login";
+import { GoogleLogin } from "@react-oauth/google";
 import CustomContainer from "../layout/CustomContainer";
 
 function SignUp() {
@@ -206,18 +206,15 @@ function SignUp() {
           <div style={{ textAlign: "center" }}>
             <GoogleLogin
               className="google-btn"
-              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
               redirectUri={
                 isProduction
                   ? process.env.REACT_APP_CLIENT_URL_PROD
                   : process.env.REACT_APP_CLIENT_URL_DEV
               }
               onSuccess={handleSuccess}
-              onFailure={handleFailure}
-              theme="dark"
-              buttonText="Sign up with Google"
-              cookiePolicy={"single_host_origin"}
-              autoLoad={false}
+              onError={handleFailure}
+              theme="filled_blue"
+              width="312px"
             />
           </div>
         </div>
