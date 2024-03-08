@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
@@ -31,12 +30,6 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(passport.initialize());
 
-// Uncomment the 3 lines below if you are NOT deploying server and client in separate locations
-
-// // Priority serve any static files
-// isProduction &&
-//   app.use(express.static(path.resolve(__dirname, "../client/build")));
-
 // CONNECT TO DATABASE
 // db config
 const dbConnection = isProduction
@@ -59,14 +52,6 @@ app.use("/api/details", detailsRouter);
 app.use("/api/diary", diaryRouter);
 app.use("/api/results", resultsRouter);
 app.use("/api/settings", settingsRouter);
-
-// Uncomment the code below if you are NOT deploying server and client in separate locations
-
-// // All remaining requests return the React app, so it can handle routing (solution found at: https://github.com/mars/heroku-cra-node/blob/c414a25250da57c73589163885e949e6f76c06e4/server/index.js#L35)
-// isProduction &&
-//   app.get("*", function (request, response) {
-//     response.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-//   });
 
 // DEFINE PORTS
 const port = process.env.PORT || 5000;
