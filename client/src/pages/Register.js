@@ -13,8 +13,6 @@ import { GoogleLogin } from "@react-oauth/google";
 import CustomContainer from "../layout/CustomContainer";
 
 function SignUp() {
-  const isProduction = process.env.NODE_ENV === "production";
-
   const authContext = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -76,9 +74,9 @@ function SignUp() {
   }
 
   // HANDLE GOOGLE AUTHENTICATION
-  function handleSuccess(response) {
+  function handleSuccess(credentials) {
     axios
-      .post("/api/auth/google", { token: response.tokenId })
+      .post("/api/auth/google", credentials)
       .then((res) => {
         const { user, isAuthenticated } = res.data;
 
@@ -91,8 +89,8 @@ function SignUp() {
       });
   }
 
-  function handleFailure(response) {
-    setMessage("Authentication failed");
+  function handleFailure() {
+    setMessage("Login failed");
   }
 
   return (
@@ -205,13 +203,9 @@ function SignUp() {
 
           <div style={{ textAlign: "center" }}>
             <GoogleLogin
-              className="google-btn"
-              redirectUri={
-                isProduction
-                  ? process.env.REACT_APP_CLIENT_URL_PROD
-                  : process.env.REACT_APP_CLIENT_URL_DEV
-              }
-              onSuccess={handleSuccess}
+              onSuccess={(credentialResponse) => {
+                handleSuccess(credentialResponse);
+              }}
               onError={handleFailure}
               theme="filled_blue"
               width="312px"

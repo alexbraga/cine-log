@@ -115,12 +115,12 @@ const logout = async (req, res) => {
 };
 
 const google = async (req, res) => {
-  try {
-    const { token } = req.body;
+  const { credential, clientId } = req.body;
 
+  try {
     const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      idToken: credential,
+      audience: clientId,
     });
 
     const { given_name, family_name, email, sub } = ticket.getPayload();
@@ -153,7 +153,12 @@ const google = async (req, res) => {
           user: user.first_name,
         });
       } else {
-        console.log(err);
+        generateTokens(user, res);
+
+        res.status(200).json({
+          isAuthenticated: true,
+          user: user.first_name,
+        });
       }
     });
   } catch (error) {
