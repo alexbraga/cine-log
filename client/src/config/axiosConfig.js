@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -19,25 +18,33 @@ instance.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
+  async (error) => {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+    try {
+      if (error.response.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
 
-      // If original request return error 401, send GET request to get new access token, then retry original request
-      return instance.get("/api/auth/token").then((res) => {
+        // If original request return error 401, send GET request to get new access token, then retry original request
+        const res = await instance.get("/api/auth/token");
         if (res.status === 200) {
           return axios(originalRequest);
+        } else {
+          // If token refresh fails, reject the original request with a new error
+          return Promise.reject(new Error("Token refresh failed"));
         }
-      });
-    } else if (error.response.status === 403) {
-      // If refresh token is not found or expired, redirect to `/error` where user is asked to log in again
-      const navigate = useNavigate();
-      navigate("/error");
-      return Promise.reject(error);
-    } else {
-      return Promise.reject(error);
+      } else if (error.response.status === 403) {
+        // If refresh token is not found or expired, redirect to `/error` where user is asked to log in again
+        window.location.href = "/error";
+
+        // Reject the promise to prevent the client from receiving the error
+        return Promise.reject(error);
+      } else {
+        // For other errors, simply reject the promise
+        return Promise.reject(error);
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 );
