@@ -6,39 +6,54 @@ import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
 import Link from "@mui/material/Link";
-import axios from "../config/axiosConfig";
+import axios from "axios";
+import axiosConfig from "../config/axiosConfig";
 import CustomContainer from "../layout/CustomContainer";
+import { TailSpin } from "react-loader-spinner";
 
 function Recover() {
   const [email, setEmail] = useState("");
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [messageSeverity, setMessageSeverity] = useState("success");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  // Create a new instance for specific requests without the response interceptor
+  const axiosInstance = axios.create({
+    baseURL: axiosConfig.defaults.baseURL,
+    withCredentials: axiosConfig.defaults.withCredentials,
+  });
 
   function handleInfo(event) {
     setEmail(event.target.value);
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     // Submit reset password request. If email is valid and user is found, display success message, otherwise display error message
-    axios
-      .post("/api/auth/recover", { email: email })
-      .then((response) => {
-        if (response.status === 200) {
-          setMessageSeverity("success");
-          setMessage(response.data.message);
-          setOpen(true);
-        }
-      })
-      .catch((error) => {
-        setMessageSeverity("error");
-        setMessage(error.response.data.message);
-        setOpen(true);
+    try {
+      setLoading(true);
+      
+      const response = await axiosInstance.post("/api/auth/recover", {
+        email: email,
       });
+
+      if (response.status === 200) {
+        setLoading(false);
+        setMessageSeverity("success");
+        setMessage(response.data.message);
+        setOpen(true);
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setMessageSeverity("error");
+      setMessage(error.response.data.message);
+      setOpen(true);
+    }
   }
 
   return (
@@ -66,16 +81,32 @@ function Recover() {
               </Grid>
 
               {/* SUBMIT BUTTON */}
-              <Button
-                color="primary"
-                fullWidth
-                sx={{ marginTop: 2 }}
-                type="submit"
-                variant="contained"
-                onClick={handleSubmit}
-              >
-                Send password reset email
-              </Button>
+              {loading ? (
+                <div>
+                  <br />
+                  <TailSpin
+                    visible={true}
+                    height="30"
+                    width="30"
+                    color="#9aaabe"
+                    ariaLabel="tail-spin-loading"
+                    radius="1"
+                    wrapperStyle={{}}
+                    wrapperClass="loader-container"
+                  />
+                </div>
+              ) : (
+                <Button
+                  color="primary"
+                  fullWidth
+                  sx={{ marginTop: 2 }}
+                  type="submit"
+                  variant="contained"
+                  onClick={handleSubmit}
+                >
+                  Send password reset email
+                </Button>
+              )}
             </form>
           </div>
 

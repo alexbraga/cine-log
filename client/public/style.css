@@ -13,8 +13,11 @@ body {
   flex: 1 0 auto;
 }
 
-.google-btn {
-  width: 100%;
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
 }
 
 button span {
@@ -45,6 +48,6 @@ background-color: rgba(255, 255, 255, 0.11);
 }
 
 .footer {
-  margin: auto;
+  margin: auto auto 0;
   padding: 20px;
 }

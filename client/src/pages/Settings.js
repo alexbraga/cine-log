@@ -92,8 +92,8 @@ function Settings() {
   // HANDLE PASSWORD CHANGE
   function validateForm() {
     return (
-      userInfo.old_password.length > 0 &&
-      userInfo.new_password.length > 0 &&
+      userInfo.old_password.length >= 4 &&
+      userInfo.new_password.length >= 4 &&
       userInfo.new_password === userInfo.confirm_password
     );
   }
@@ -110,30 +110,45 @@ function Settings() {
   }
 
   // Execute password fields validation check and display success or error message based on response. If validation fails, display error message with details
-  function handleSubmitPswd() {
+  async function handleSubmitPswd() {
     if (validateForm()) {
-      axios
-        .patch("/api/settings/password", {
+      try {
+        const response = await axios.patch("/api/settings/password", {
           old_password: userInfo.old_password,
           password: userInfo.new_password,
-        })
-        .then((response) => {
-          setMessage(response.data.message);
-          setSeverity("success");
-          setOpenSnackbar(true);
-          setChangePswd(false);
-          clearFields();
-        })
-        .catch((error) => {
-          setMessage("Incorrect 'Old Password'");
-          setSeverity("error");
-          setOpenSnackbar(true);
-          setChangePswd(false);
-          clearFields();
         });
+
+        if (response.status === 200) {
+          setSeverity("success");
+          setMessage(response.data.message);
+          setOpenSnackbar(true);
+          setChangePswd(false);
+          clearFields();
+        }
+      } catch (error) {
+        setSeverity("error");
+        setMessage("Incorrect 'Old Password'");
+        setOpenSnackbar(true);
+        setChangePswd(false);
+        clearFields();
+      }
     } else {
-      setMessage("'New Password' and 'Confirm Password' fields don't match");
       setSeverity("error");
+      if (
+        userInfo.new_password.length < 4 &&
+        userInfo.new_password !== userInfo.confirm_password
+      ) {
+        setMessage(
+          "New password must be at least 4 characters long. 'New Password' and 'Confirm Password' fields don't match"
+        );
+      } else if (userInfo.old_password.length < 4) {
+        setMessage("Old password must be at least 4 characters long");
+      } else if (userInfo.new_password.length < 4) {
+        setMessage("New password must be at least 4 characters long");
+      } else {
+        setMessage("'New Password' and 'Confirm Password' fields don't match");
+      }
+
       setOpenSnackbar(true);
       setChangePswd(false);
       clearFields();
@@ -142,11 +157,9 @@ function Settings() {
 
   // Delete user account, clear `localStorage` and redirect to `/home`
   function deleteAccount() {
-    axios
-      .delete("/api/settings")
-      .then((response) => {
-        return;
-      });
+    axios.delete("/api/settings").then((response) => {
+      return;
+    });
 
     axios
       .get("/api/auth/logout")

@@ -6,16 +6,13 @@ import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
 import Link from "@mui/material/Link";
-import axios from "../config/axiosConfig";
+import axios from "axios";
+import axiosConfig from "../config/axiosConfig";
 import CustomContainer from "../layout/CustomContainer";
+import { TailSpin } from "react-loader-spinner";
 
 function Reset() {
   const [showForm, setShowForm] = useState(false);
-
-  const [password, setPassword] = useState({
-    new_password: "",
-    confirm_password: "",
-  });
 
   const [open, setOpen] = useState(false);
 
@@ -27,21 +24,42 @@ function Reset() {
 
   const location = useLocation();
 
+  const [loading, setLoading] = useState(false);
+
+  const [password, setPassword] = useState({
+    new_password: "",
+    confirm_password: "",
+  });
+
+  // Create a new instance for specific requests without the response interceptor
+  const axiosInstance = axios.create({
+    baseURL: axiosConfig.defaults.baseURL,
+    withCredentials: axiosConfig.defaults.withCredentials,
+  });
+
   useEffect(() => {
     // If request with token provided on `location.pathname` is valid, show password change form; otherwise display error message
-    axios
-      .get(`/api/auth${location.pathname}`)
-      .then((response) => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        const response = await axiosInstance.get(
+          `/api/auth${location.pathname}`
+        );
         if (response.status === 200) {
+          setLoading(false);
           setShowForm(true);
         }
-      })
-      .catch((error) => {
+      } catch (error) {
+        setLoading(false);
         setShowForm(false);
         setMessageSeverity("error");
         setMessage(error.response.data.message);
         setOpen(true);
-      });
+      }
+    };
+
+    fetchData();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -60,36 +78,60 @@ function Reset() {
 
   function validateForm() {
     return (
-      password.new_password.length > 0 &&
+      password.new_password.length >= 4 &&
       password.new_password === password.confirm_password
     );
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     // If new password pass the validation check, make a POST request with the new password. On success, display success message; otherwise display error message
     if (validateForm()) {
-      axios
-        .post(`/api/auth${location.pathname}`, {
-          password: password.new_password,
-        })
-        .then((response) => {
-          if (response.status === 200) {
-            setMessageSeverity("success");
-            setMessage(response.data.message);
-            setOpen(true);
-            setPassword({
-              new_password: "",
-              confirm_password: "",
-            });
+      try {
+        setLoading(true);
+
+        const response = await axiosInstance.post(
+          `/api/auth${location.pathname}`,
+          {
+            password: password.new_password,
           }
-        })
-        .catch((error) => {
-          setMessageSeverity("error");
-          setMessage(error.response.data.message);
+        );
+
+        if (response.status === 200) {
+          setLoading(false);
+          setMessageSeverity("success");
+          setMessage(response.data.message);
           setOpen(true);
-        });
+          setPassword({
+            new_password: "",
+            confirm_password: "",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+        setMessageSeverity("error");
+        setMessage(error.response.data.message);
+        setOpen(true);
+      }
+    } else {
+      setMessageSeverity("error");
+      if (
+        password.new_password.length < 4 &&
+        password.new_password !== password.confirm_password
+      ) {
+        setMessage(
+          "• Password must be at least 4 characters long\n" +
+            "• 'New Password' and 'Confirm Password' fields don't match"
+        );
+      } else if (password.new_password.length < 4) {
+        setMessage("Password must be at least 4 characters long");
+      } else {
+        setMessage("'New Password' and 'Confirm Password' fields don't match");
+      }
+
+      setOpen(true);
     }
   }
 
@@ -99,7 +141,21 @@ function Reset() {
       content={
         <div>
           <div>
-            {showForm ? (
+            {loading ? (
+              <div>
+                <br />
+                <TailSpin
+                  visible={true}
+                  height="30"
+                  width="30"
+                  color="#9aaabe"
+                  ariaLabel="tail-spin-loading"
+                  radius="1"
+                  wrapperStyle={{}}
+                  wrapperClass="loader-container"
+                />
+              </div>
+            ) : showForm ? (
               <form>
                 <Grid container spacing={2}>
                   {/* INPUT FIELDS */}
@@ -131,16 +187,32 @@ function Reset() {
                 </Grid>
 
                 {/* SUBMIT BUTTON */}
-                <Button
-                  color="primary"
-                  fullWidth
-                  sx={{ marginTop: 2 }}
-                  type="submit"
-                  variant="contained"
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </Button>
+                {loading ? (
+                  <div>
+                    <br />
+                    <TailSpin
+                      visible={true}
+                      height="30"
+                      width="30"
+                      color="#9aaabe"
+                      ariaLabel="tail-spin-loading"
+                      radius="1"
+                      wrapperStyle={{}}
+                      wrapperClass="loader-container"
+                    />
+                  </div>
+                ) : (
+                  <Button
+                    color="primary"
+                    fullWidth
+                    sx={{ marginTop: 2 }}
+                    type="submit"
+                    variant="contained"
+                    onClick={handleSubmit}
+                  >
+                    Submit
+                  </Button>
+                )}
               </form>
             ) : null}
           </div>

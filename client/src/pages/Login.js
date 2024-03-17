@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -12,6 +12,7 @@ import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
 import { GoogleLogin } from "@react-oauth/google";
 import CustomContainer from "../layout/CustomContainer";
+import { TailSpin } from "react-loader-spinner";
 
 function Login() {
   const authContext = useContext(AuthContext);
@@ -24,10 +25,21 @@ function Login() {
 
   const [message, setMessage] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
+  const isMounted = useRef(true);
+
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
   });
+
+  // Set isMounted to false when the component unmounts. Checking under handleAuth, handleLogin and handleSuccess if isMounted is true ensures that the component is still mounted before updating the state, which prevents memory leak
+  React.useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
 
   // Control values on input fields and set them to `userInfo` object
   function handleInfo(event) {
@@ -41,49 +53,73 @@ function Login() {
     });
   }
 
+  // On successful authentication, set `user` to user's first name and `isAuthenticated` to true, then redirect to the route that user was trying to access, otherwise redirect to `/diary`
+  function handleAuth(res) {
+    const { user, isAuthenticated } = res.data;
+
+    if (isMounted && isAuthenticated) {
+      authContext.setUser(user);
+      authContext.setIsAuthenticated(isAuthenticated);
+      navigate(state?.path || "/diary");
+    }
+  }
+
   // HANDLE LOCAL AUTHENTICATION
-  function handleLogin(event) {
+  async function handleLogin(event) {
     event.preventDefault();
 
-    axios
-      .post("/api/auth/login", userInfo)
-      .then((response) => {
-        // On successful authentication, set `user` to user's first name and `isAuthenticated` to true, then redirect to the route that user was trying to access, otherwise redirect to `/diary`
-        const { user, isAuthenticated } = response.data;
-
-        if (isAuthenticated) {
-          authContext.setUser(user);
-          authContext.setIsAuthenticated(isAuthenticated);
-          navigate(state?.path || "/diary");
-        }
-      })
-      .catch((err) => {
-        setMessage(err.response.data.message);
+    try {
+      setLoading(true);
+      const response = await axios.post("/api/auth/login", userInfo);
+      handleAuth(response);
+    } catch (error) {
+      if (isMounted.current) {
+        setLoading(false);
+        setMessage(error.response.data.message);
         setOpen(true);
-      });
+      }
+    } finally {
+      if (isMounted.current) {
+        setLoading(false);
+      }
+    }
   }
 
   // HANDLE GOOGLE AUTHENTICATION
-  function handleSuccess(credentials) {
-    axios
-      .post("/api/auth/google", credentials)
-      .then((res) => {
-        const { user, isAuthenticated } = res.data;
-
-        authContext.setUser(user);
-        authContext.setIsAuthenticated(isAuthenticated);
-        navigate(state?.path || "/diary");
-      })
-      .catch((err) => {
-        console.log("Authentication failed: " + err);
-      });
+  async function handleSuccess(credentials) {
+    try {
+      setLoading(true);
+      const response = await axios.post("/api/auth/google", credentials);
+      handleAuth(response);
+    } catch (error) {
+      if (isMounted.current) {
+        setLoading(false);
+        setMessage(error.message);
+        console.log("Google Authorization failed: " + error);
+      }
+    } finally {
+      if (isMounted.current) {
+        setLoading(false);
+      }
+    }
   }
 
   function handleFailure() {
     setMessage("Login failed");
   }
 
-  return (
+  return loading ? (
+    <TailSpin
+      visible={true}
+      height="30"
+      width="30"
+      color="#9aaabe"
+      ariaLabel="tail-spin-loading"
+      radius="1"
+      wrapperStyle={{}}
+      wrapperClass="loader-container"
+    />
+  ) : (
     <CustomContainer
       title="Login"
       content={
